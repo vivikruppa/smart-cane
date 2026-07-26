@@ -68,12 +68,7 @@ A arquitetura do sistema contempla três fluxos principais:
 
 ### 2.2 Arquitetura de Hardware
 
-A unidade central do protótipo é a 
-[Seeed Studio XIAO ESP32-S3 Sense](https://wiki.seeedstudio.com/xiao_esp32s3_getting_started/#xiao-esp32-s3-sense-front). Sua escolha esteve relacionada principalmente à integração entre o microcontrolador ESP32-S3 e o módulo de câmera, às dimensões compactas e à disponibilidade de conectividade Wi-Fi. Além disso, a plataforma permite tanto a execução de aplicações embarcadas convencionais quanto a implantação de modelos de aprendizado de máquina voltados a dispositivos com recursos limitados.
-
-A câmera integrada ao módulo Sense atua como principal dispositivo de entrada do sistema. Ela é utilizada tanto para a captura das imagens enviadas ao Gemini quanto para a aquisição dos quadros processados localmente pelo modelo do Edge Impulse.
-
-Nos modos de descrição, diferentes configurações do sensor são aplicadas de acordo com a finalidade da captura, como análise de riscos, objetos próximos ou cenas mais amplas. Para o processamento local, a imagem é capturada em uma resolução adequada ao pipeline de inferência e posteriormente preparada pelo software.
+Os componentes utilizados para a elaboração do protótipo são descritos na tabela abaixo: 
 
 | Componente | Função no projeto |
 |---|---|
@@ -84,11 +79,28 @@ Nos modos de descrição, diferentes configurações do sensor são aplicadas de
 | Cabo USB | Alimentação, programação e comunicação com o Monitor Serial |
 | Jumpers e conexões | Interligação entre a placa e a saída de áudio |
 
+As conexões executadas são ilustradas na tabela abiaxo e no diagrama: 
 | Sinal | Pino da XIAO ESP32-S3 |
 |---|---|
-| Dados PDM | GPIO utilizado no projeto |
-| Clock PDM | GPIO utilizado no projeto |
+| Dados PDM | GPIO 1 |
+| Clock PDM | GPIO 2 |
 | Terra | GND |
+
+#### Placa principal e Sistema de captura de imagem
+A unidade central do protótipo é a 
+[Seeed Studio XIAO ESP32-S3 Sense](https://wiki.seeedstudio.com/xiao_esp32s3_getting_started/#xiao-esp32-s3-sense-front). Sua escolha esteve relacionada principalmente à integração entre o microcontrolador ESP32-S3 e o módulo de câmera, às dimensões compactas e à disponibilidade de conectividade Wi-Fi. 
+
+A câmera integrada ao módulo Sense atua como principal dispositivo de entrada do sistema. Nos modos 1, 2 e 3, ela é configurada para capturar imagens em formato JPEG e resolução QXGA, utilizando dois buffers de imagem. A escolha do formato JPEG reduz o tamanho dos dados antes do envio ao serviço de análise em nuvem. Antes de cada captura, o software aplica configurações específicas de exposição e balanço de branco conforme o modo selecionado. Após os ajustes, o sistema aguarda brevemente a estabilização do sensor antes de capturar a imagem.
+
+Já no modo de inferência local, a câmera utiliza uma configuração diferente, com resolução QVGA e armazenamento do frame buffer em PSRAM. A imagem JPEG capturada é convertida para RGB888 e redimensionada para as dimensões exigidas pelo modelo do Edge Impulse antes da execução da inferência.
+
+#### Circuito de saída de áudio
+
+A saída auditiva do protótipo é realizada por meio de uma interface PDM controlada pelo ESP32-S3. O circuito utiliza linhas digitais de dados e clock, além de uma referência comum de terra, para encaminhar o sinal ao dispositivo de reprodução utilizado nos testes.
+
+A escolha dessa abordagem permitiu desenvolver a reprodução de áudio diretamente a partir dos recursos disponíveis no microcontrolador, sem a adoção do módulo amplificador com DAC inicialmente considerado. O áudio recebido do serviço de síntese de voz é convertido pelo software em amostras PCM, que são transmitidas pelo periférico configurado para a saída PDM.
+
+Para mais detalhes sobre a técnica PDM e referências utilizadas, consulte a sessão 
 
 ### 2.3 Arquitetura de Software
 <div align="justify">
@@ -130,6 +142,13 @@ por que foi necessário dividir o projeto em módulos de teste antes da integra�
 </strong> 
 
 ## 3. Resultados
+
+#### Estado da montagem física
+
+O hardware desenvolvido corresponde a um protótipo de bancada destinado à validação das funções de captura, processamento e reprodução de áudio. Nesta etapa, não foram desenvolvidos a estrutura mecânica, a alimentação portátil, os controles físicos nem a forma de fixação em uma bengala.
+
+Assim, o projeto valida principalmente a viabilidade do sistema eletrônico e de software. A integração em um dispositivo portátil e ergonomicamente adequado permanece como uma etapa futura.
+
 ### 3.1 Funcionalidades implementadas 
 ### 3.2 Desempenho e tempo de resposta
 ### 3.3 Limitações
