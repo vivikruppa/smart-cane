@@ -1,26 +1,73 @@
 # Smart Cane 
-
-## 1. Resumo do Projeto 
-(Contém as partes de proposta, Contexto, motivação, Objetivo) 
+<div align="justify">
+Este projeto consiste no desenvolvimento de um <strong>dispositivo assistivo baseado na placa Seeed Studio XIAO ESP32-S3 Sense</strong>, com o objetivo de auxiliar pessoas com deficiência visual na interpretação de informações presentes no ambiente. Para isso, o sistema utiliza uma câmera para capturar imagens e processá-las de acordo com diferentes modos de funcionamento, permitindo obter descrições de objetos, textos e características do espaço ao redor.
+</div>
 
 ## 1. Resumo do Projeto
 
-Este projeto consiste no desenvolvimento de um dispositivo assistivo baseado na placa Seeed Studio XIAO ESP32-S3 Sense, com o objetivo de auxiliar pessoas com deficiência visual na interpretação de informações presentes no ambiente. Para isso, o sistema utiliza uma câmera para capturar imagens e processá-las de acordo com diferentes modos de funcionamento, permitindo obter descrições de objetos, textos e características do espaço ao redor.
+### Objetivo
+
+Este projeto apresenta o desenvolvimento de um protótipo de dispositivo assistivo voltado ao apoio de pessoas com deficiência visual na interpretação de informações presentes no ambiente. A proposta foi concebida como uma etapa inicial para uma possível integração futura a uma smart cane, explorando o uso de hardware embarcado de baixo custo, visão computacional e retorno auditivo como recursos de acessibilidade.
+
+### Funcionamento geral
+
+O dispositivo é baseado na placa Seeed Studio XIAO ESP32-S3 Sense e utiliza uma câmera para capturar informações visuais do ambiente. A partir dessas imagens, o sistema pode gerar descrições de objetos, textos e características do espaço ao redor, além de executar um modelo local de detecção de objetos. As informações produzidas podem ser apresentadas ao usuário por meio de áudio.
+
+### Tecnologias utilizadas
+
+Durante o desenvolvimento, foram estudados temas relacionados a sistemas embarcados, visão computacional, inteligência artificial em nuvem, TinyML, comunicação com APIs, síntese de voz, formatos digitais de áudio e gerenciamento de memória em microcontroladores.
+
+Entre as principais tecnologias utilizadas estão a XIAO ESP32-S3 Sense, o framework Arduino com PlatformIO, o Gemini para análise de imagens, o Azure Speech para síntese de voz, o Edge Impulse para inferência local e o LittleFS para armazenamento temporário.
+
+Para mais detalhes, consulte a seção [Arquitetura de software](#23-arquitetura-de-software).
+
+### Resultados
+
+Como resultado, foi obtido um protótipo funcional capaz de capturar imagens, produzir descrições textuais, convertê-las em áudio e executar inferências localmente. O projeto também permitiu avaliar limitações relacionadas ao tempo de resposta, à conectividade, aos recursos de memória e à integração entre diferentes módulos de software.
+
+Para mais detalhes, consulte a seção [Resultados](#3-resultados).
+
+## 2. Sistema Desenvolvido
+
+O sistema desenvolvido possui uma arquitetura híbrida e modular, combinando processamento realizado localmente no dispositivo com serviços executados em nuvem. A placa Seeed Studio XIAO ESP32-S3 Sense atua como unidade central do protótipo, sendo responsável pelo controle da câmera, seleção dos modos de funcionamento, conexão com a rede Wi-Fi, comunicação com serviços externos, armazenamento temporário de arquivos e reprodução do áudio.
+
+O sistema oferece diferentes modos de captura e análise de imagem que utilizam a câmera para capturar uma imagem posteriormente enviada ao Gemini para geração de uma descrição textual. Cada modo aplica uma configuração específica à câmera e utiliza um prompt correspondente ao tipo de informação desejada:
+#### Modo 1 — Apoio à mobilidade e identificação de riscos
+O primeiro modo é voltado ao auxílio durante o deslocamento do usuário. A imagem capturada é analisada com prioridade para obstáculos, degraus, buracos, portas, passagens e outros elementos que possam representar risco imediato.
+
+O sistema também busca indicar a direção mais livre para seguir, produzindo uma resposta curta e objetiva para facilitar a compreensão por áudio.
+
+#### Modo 2 — Leitura e análise de objetos próximos
+
+O segundo modo é destinado à análise de objetos posicionados próximos à câmera. Sua configuração procura favorecer a captura de detalhes e textos presentes em embalagens, placas, documentos ou outros objetos.
+
+O Gemini recebe uma solicitação para identificar o objeto principal, verificar a presença de texto e descrever seu estado ou suas características mais relevantes.
+
+#### Modo 3 — Descrição geral do ambiente
+
+O terceiro modo utiliza uma configuração voltada à captura de cenas mais amplas. Seu objetivo é oferecer uma descrição geral do ambiente, destacando objetos, locais, pessoas ou acontecimentos relevantes presentes na imagem.
+
+#### Modo 4 — Inferência local
+
+O quarto modo utiliza um fluxo diferente dos demais. Em vez de enviar a imagem para um serviço externo, o dispositivo executa localmente um modelo de visão computacional desenvolvido no Edge Impulse.
+
+Nesse modo, a imagem é capturada, preparada e fornecida ao classificador embarcado, que retorna as classes detectadas, suas probabilidades e, quando aplicável, a localização dos objetos na imagem. Na versão atual, o resultado da inferência é exibido no Monitor Serial e ainda não é encaminhado ao sistema de áudio.
+
+### 2.1 Fluxo de processamento
+
+A arquitetura do sistema contempla três fluxos principais. O primeiro transforma uma imagem capturada pela câmera em uma descrição textual, utilizando o Gemini. O segundo transforma essa descrição em áudio por meio do Azure Speech, armazenando e reproduzindo o arquivo gerado no próprio dispositivo. O terceiro realiza a inferência de imagens localmente no ESP32-S3 por meio de um modelo desenvolvido na plataforma Edge Impulse.
 
 O processamento é realizado por meio de duas abordagens. Na primeira, a imagem capturada é convertida para Base64 e enviada ao modelo Gemini, que gera uma descrição textual conforme o modo selecionado. Em seguida, o texto é encaminhado ao serviço Azure Speech, responsável pela síntese de voz. O áudio retornado em formato WAV é armazenado temporariamente no sistema de arquivos LittleFS e reproduzido pela placa por meio de uma saída PDM. Na segunda abordagem, o dispositivo utiliza um modelo de visão computacional desenvolvido na plataforma Edge Impulse para realizar a detecção de objetos localmente no ESP32-S3.
 
 O desenvolvimento foi conduzido de forma incremental, com a criação e validação de módulos separados para captura de imagem, comunicação Wi-Fi, processamento por inteligência artificial, síntese de voz, armazenamento e reprodução de áudio. Após os testes individuais, esses componentes foram integrados em um único sistema. Como resultado, foi obtido um protótipo capaz de capturar imagens, gerar descrições textuais e reproduzi-las em áudio, além de executar inferências localmente. O sistema ainda apresenta limitações relacionadas ao tempo de resposta, à dependência de conexão com a internet e à integração entre alguns modos de funcionamento.
 
-## 2. Sistema Desenvolvido 
-(Será responsável por explicar a Arquitetura do sistema (tanto o hardware como o software?) e o Fluxo de Processamento
+### 2.2 Hardware
 
-### 2.1 Fluxo de processamento
-A arquitetura do sistema é híbrida e modular, combinando processamento embarcado e serviços em nuvem. A placa XIAO ESP32-S3 Sense atua como elemento central, sendo responsável pela captura das imagens, seleção dos modos, comunicação com serviços externos, armazenamento temporário e reprodução de áudio. Nos modos de descrição, as imagens são enviadas ao Gemini para geração de texto, que posteriormente é convertido em áudio pelo Azure Speech. No modo de inferência local, um modelo do Edge Impulse é executado diretamente no ESP32-S3. O software é dividido em módulos responsáveis por câmera, conectividade, processamento das respostas, síntese de voz, armazenamento, reprodução WAV, saída PDM e inferência local.
+### 2.3 Arquitetura de Software
+<div align="justify">
+O software foi organizado de forma modular, separando as responsabilidades de captura de imagem, comunicação com serviços externos, tratamento de texto, geração e reprodução de áudio e inferência local. O arquivo main.cpp atua como controlador central, inicializando os recursos do sistema, recebendo a seleção do modo e acionando os módulos necessários para cada fluxo. A tabela seguinte detalha a responsabilidade de cada módulo:
+</div>
 
-### 3.2 Hardware
-
-### 3.3 Arquitetura de Software
-A arquitetura de software é híbrida, pois combina processamento local no ESP32-S3 com processamento realizado por serviços em nuvem. Nos modos 1, 2 e 3, o dispositivo captura uma imagem localmente, envia seus dados ao Gemini e recebe uma descrição textual. Essa descrição é então enviada ao Azure Speech, que retorna um arquivo de áudio reproduzido pela placa. No modo 4, o processamento da imagem é realizado localmente por um modelo do Edge Impulse.
 | Módulo | Responsabilidade |
 |---|---|
 | `main.cpp` | Controla a inicialização do sistema, recebe o modo selecionado e coordena a execução dos demais módulos. |
@@ -34,11 +81,29 @@ A arquitetura de software é híbrida, pois combina processamento local no ESP32
 | `LittleFS` | Armazena temporariamente o arquivo WAV gerado pelo serviço de síntese de voz. |
 | `secrets.h` | Mantém as credenciais da rede Wi-Fi e das APIs separadas do código principal. |
 
-Nos modos baseados em serviços de nuvem, o main.cpp cria e configura o módulo de câmera conforme o modo escolhido. A imagem capturada é convertida para Base64 e entregue ao WifiManager, que monta e envia a requisição ao Gemini. A resposta textual é tratada com auxílio de Utilities e enviada ao AzureTtsClient. O áudio retornado é salvo temporariamente no LittleFS, interpretado pelo WavPlayer e encaminhado ao PdmOutput, responsável pela reprodução
+<div align="justify">
+Nos modos baseados em serviços de nuvem, o main.cpp cria e configura o módulo de câmera conforme o modo escolhido. A imagem capturada é convertida para Base64 e entregue ao WifiManager, que monta e envia a requisição ao Gemini. A resposta textual é tratada com auxílio de Utilities e enviada ao AzureTtsClient. O áudio retornado é salvo temporariamente no LittleFS, interpretado pelo WavPlayer e encaminhado ao PdmOutput, responsável pela reprodução. 
 
+O modo 4 utiliza um fluxo independente. O main.cpp inicializa o módulo SignInference, que controla a câmera, prepara a imagem e executa o classificador do Edge Impulse localmente. Na versão atual, os resultados são apresentados pelo Monitor Serial e ainda não são encaminhados ao módulo de áudio.
+</div>
+
+Exemplos que vale explicar depois:
+<strong> 
+por que a imagem é convertida para Base64;
+por que usamos JSON nas requisições;
+por que o áudio é recebido em WAV PCM;
+por que usamos LittleFS;
+por que o arquivo é temporário e removido após a reprodução;
+por que existe um módulo WavPlayer separado do PdmOutput;
+por que parte do processamento ocorre na nuvem;
+por que existe também inferência local com Edge Impulse;
+por que escolhemos Azure Speech para TTS;
+por que passamos grandes String por referência;
+por que foi necessário dividir o projeto em módulos de teste antes da integração.
+</strong> 
 
 ## 3. Resultados
-### 3.1 Funcionalidades implementadas / Modos de Funcionamento  
+### 3.1 Funcionalidades implementadas 
 ### 3.2 Desempenho e tempo de resposta
 ### 3.3 Limitações
 
