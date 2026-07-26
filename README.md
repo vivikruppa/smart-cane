@@ -14,11 +14,11 @@ O desenvolvimento foi conduzido de forma incremental, com a criação e validaç
 ## 2. Sistema Desenvolvido 
 (Será responsável por explicar a Arquitetura do sistema (tanto o hardware como o software?) e o Fluxo de Processamento
 
-### 3.1 Visão Geral da Arquitetura
-
+### 2.1 Fluxo de processamento
 A arquitetura do sistema é híbrida e modular, combinando processamento embarcado e serviços em nuvem. A placa XIAO ESP32-S3 Sense atua como elemento central, sendo responsável pela captura das imagens, seleção dos modos, comunicação com serviços externos, armazenamento temporário e reprodução de áudio. Nos modos de descrição, as imagens são enviadas ao Gemini para geração de texto, que posteriormente é convertido em áudio pelo Azure Speech. No modo de inferência local, um modelo do Edge Impulse é executado diretamente no ESP32-S3. O software é dividido em módulos responsáveis por câmera, conectividade, processamento das respostas, síntese de voz, armazenamento, reprodução WAV, saída PDM e inferência local.
 
 ### 3.2 Hardware
+
 ### 3.3 Arquitetura de Software
 A arquitetura de software é híbrida, pois combina processamento local no ESP32-S3 com processamento realizado por serviços em nuvem. Nos modos 1, 2 e 3, o dispositivo captura uma imagem localmente, envia seus dados ao Gemini e recebe uma descrição textual. Essa descrição é então enviada ao Azure Speech, que retorna um arquivo de áudio reproduzido pela placa. No modo 4, o processamento da imagem é realizado localmente por um modelo do Edge Impulse.
 | Módulo | Responsabilidade |
@@ -37,11 +37,8 @@ A arquitetura de software é híbrida, pois combina processamento local no ESP32
 Nos modos baseados em serviços de nuvem, o main.cpp cria e configura o módulo de câmera conforme o modo escolhido. A imagem capturada é convertida para Base64 e entregue ao WifiManager, que monta e envia a requisição ao Gemini. A resposta textual é tratada com auxílio de Utilities e enviada ao AzureTtsClient. O áudio retornado é salvo temporariamente no LittleFS, interpretado pelo WavPlayer e encaminhado ao PdmOutput, responsável pela reprodução
 
 
-### 3.4 Modos de funcionamento
-### 3.5 Fluxo de processamento
-
 ## 3. Resultados
-### 3.1 Funcionalidades implementadas
+### 3.1 Funcionalidades implementadas / Modos de Funcionamento  
 ### 3.2 Desempenho e tempo de resposta
 ### 3.3 Limitações
 
