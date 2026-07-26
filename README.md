@@ -13,13 +13,15 @@ Este projeto apresenta o desenvolvimento de um protótipo de dispositivo assisti
 
 O dispositivo é baseado na placa Seeed Studio XIAO ESP32-S3 Sense e utiliza uma câmera para capturar informações visuais do ambiente. A partir dessas imagens, o sistema pode gerar descrições de objetos, textos e características do espaço ao redor, além de executar um modelo local de detecção de objetos. As informações produzidas podem ser apresentadas ao usuário por meio de áudio.
 
+Para mais detalhes, consulte a seção [Sistema Desenvolvido](#2-sistema-desenvolvido). 
+
 ### Tecnologias utilizadas
 
 Durante o desenvolvimento, foram estudados temas relacionados a sistemas embarcados, visão computacional, inteligência artificial em nuvem, TinyML, comunicação com APIs, síntese de voz, formatos digitais de áudio e gerenciamento de memória em microcontroladores.
 
 Entre as principais tecnologias utilizadas estão a XIAO ESP32-S3 Sense, o framework Arduino com PlatformIO, o Gemini para análise de imagens, o Azure Speech para síntese de voz, o Edge Impulse para inferência local e o LittleFS para armazenamento temporário.
 
-Para mais detalhes, consulte a seção [Arquitetura de software](#23-arquitetura-de-software).
+Para mais detalhes e justificativas sobre as tecnologias escolhidas, consulte a seção [Arquitetura de software](#23-arquitetura-de-software).
 
 ### Resultados
 
@@ -32,36 +34,61 @@ Para mais detalhes, consulte a seção [Resultados](#3-resultados).
 O sistema desenvolvido possui uma arquitetura híbrida e modular, combinando processamento realizado localmente no dispositivo com serviços executados em nuvem. A placa Seeed Studio XIAO ESP32-S3 Sense atua como unidade central do protótipo, sendo responsável pelo controle da câmera, seleção dos modos de funcionamento, conexão com a rede Wi-Fi, comunicação com serviços externos, armazenamento temporário de arquivos e reprodução do áudio.
 
 O sistema oferece diferentes modos de captura e análise de imagem que utilizam a câmera para capturar uma imagem posteriormente enviada ao Gemini para geração de uma descrição textual. Cada modo aplica uma configuração específica à câmera e utiliza um prompt correspondente ao tipo de informação desejada:
-#### Modo 1 — Apoio à mobilidade e identificação de riscos
-O primeiro modo é voltado ao auxílio durante o deslocamento do usuário. A imagem capturada é analisada com prioridade para obstáculos, degraus, buracos, portas, passagens e outros elementos que possam representar risco imediato.
 
-O sistema também busca indicar a direção mais livre para seguir, produzindo uma resposta curta e objetiva para facilitar a compreensão por áudio.
+1. **Apoio à mobilidade e identificação de riscos**
 
-#### Modo 2 — Leitura e análise de objetos próximos
+   O primeiro modo é voltado ao auxílio durante o deslocamento do usuário. A imagem capturada é analisada com prioridade para obstáculos, degraus, buracos, portas, passagens e outros elementos que possam representar risco imediato.
 
-O segundo modo é destinado à análise de objetos posicionados próximos à câmera. Sua configuração procura favorecer a captura de detalhes e textos presentes em embalagens, placas, documentos ou outros objetos.
+   O sistema também busca indicar a direção mais livre para seguir, produzindo uma resposta curta e objetiva para facilitar a compreensão por áudio.
 
-O Gemini recebe uma solicitação para identificar o objeto principal, verificar a presença de texto e descrever seu estado ou suas características mais relevantes.
+2. **Leitura e análise de objetos próximos**
 
-#### Modo 3 — Descrição geral do ambiente
+   O segundo modo é destinado à análise de objetos posicionados próximos à câmera. Sua configuração procura favorecer a captura de detalhes e textos presentes em embalagens, placas, documentos ou outros objetos.
 
-O terceiro modo utiliza uma configuração voltada à captura de cenas mais amplas. Seu objetivo é oferecer uma descrição geral do ambiente, destacando objetos, locais, pessoas ou acontecimentos relevantes presentes na imagem.
+   O Gemini recebe uma solicitação para identificar o objeto principal, verificar a presença de texto e descrever seu estado ou suas características mais relevantes.
 
-#### Modo 4 — Inferência local
+3. **Descrição geral do ambiente**
 
-O quarto modo utiliza um fluxo diferente dos demais. Em vez de enviar a imagem para um serviço externo, o dispositivo executa localmente um modelo de visão computacional desenvolvido no Edge Impulse.
+   O terceiro modo utiliza uma configuração voltada à captura de cenas mais amplas. Seu objetivo é oferecer uma descrição geral do ambiente, destacando objetos, locais, pessoas ou acontecimentos relevantes presentes na imagem.
 
-Nesse modo, a imagem é capturada, preparada e fornecida ao classificador embarcado, que retorna as classes detectadas, suas probabilidades e, quando aplicável, a localização dos objetos na imagem. Na versão atual, o resultado da inferência é exibido no Monitor Serial e ainda não é encaminhado ao sistema de áudio.
+O quarto modo utiliza um fluxo diferente dos demais. Em vez de enviar a imagem para um serviço externo, o dispositivo executa localmente um modelo de visão computacional desenvolvido no Edge Impulse: 
 
+4. **Inferência local**
+
+   Nesse modo, a imagem é capturada, preparada e fornecida ao classificador embarcado, que retorna as classes detectadas, suas probabilidades e, quando aplicável, a localização dos objetos na imagem. Na versão atual, o resultado da inferência é exibido no Monitor Serial e ainda não é encaminhado ao sistema de áudio.
+   
 ### 2.1 Fluxo de processamento
 
-A arquitetura do sistema contempla três fluxos principais. O primeiro transforma uma imagem capturada pela câmera em uma descrição textual, utilizando o Gemini. O segundo transforma essa descrição em áudio por meio do Azure Speech, armazenando e reproduzindo o arquivo gerado no próprio dispositivo. O terceiro realiza a inferência de imagens localmente no ESP32-S3 por meio de um modelo desenvolvido na plataforma Edge Impulse.
+A arquitetura do sistema contempla três fluxos principais: 
+1. **Fluxo de imagem para texto:** a imagem capturada pela câmera é convertida para Base64 e enviada ao modelo Gemini, juntamente com um prompt correspondente ao modo selecionado. O serviço processa a imagem e retorna uma descrição textual.
 
-O processamento é realizado por meio de duas abordagens. Na primeira, a imagem capturada é convertida para Base64 e enviada ao modelo Gemini, que gera uma descrição textual conforme o modo selecionado. Em seguida, o texto é encaminhado ao serviço Azure Speech, responsável pela síntese de voz. O áudio retornado em formato WAV é armazenado temporariamente no sistema de arquivos LittleFS e reproduzido pela placa por meio de uma saída PDM. Na segunda abordagem, o dispositivo utiliza um modelo de visão computacional desenvolvido na plataforma Edge Impulse para realizar a detecção de objetos localmente no ESP32-S3.
+2. **Fluxo de texto para áudio:** a descrição produzida pelo Gemini é encaminhada ao Azure Speech, responsável pela síntese de voz. O áudio retornado em formato WAV é armazenado temporariamente no LittleFS, interpretado pelo módulo de reprodução e enviado pela saída PDM.
 
-O desenvolvimento foi conduzido de forma incremental, com a criação e validação de módulos separados para captura de imagem, comunicação Wi-Fi, processamento por inteligência artificial, síntese de voz, armazenamento e reprodução de áudio. Após os testes individuais, esses componentes foram integrados em um único sistema. Como resultado, foi obtido um protótipo capaz de capturar imagens, gerar descrições textuais e reproduzi-las em áudio, além de executar inferências localmente. O sistema ainda apresenta limitações relacionadas ao tempo de resposta, à dependência de conexão com a internet e à integração entre alguns modos de funcionamento.
+3. **Fluxo de inferência local:** a imagem capturada é processada diretamente no ESP32-S3 por meio de um modelo desenvolvido no Edge Impulse. Nesse fluxo, não há envio da imagem para serviços externos.
 
-### 2.2 Hardware
+### 2.2 Arquitetura de Hardware
+
+A unidade central do protótipo é a 
+[Seeed Studio XIAO ESP32-S3 Sense](https://wiki.seeedstudio.com/xiao_esp32s3_getting_started/#xiao-esp32-s3-sense-front). Sua escolha esteve relacionada principalmente à integração entre o microcontrolador ESP32-S3 e o módulo de câmera, às dimensões compactas e à disponibilidade de conectividade Wi-Fi. Além disso, a plataforma permite tanto a execução de aplicações embarcadas convencionais quanto a implantação de modelos de aprendizado de máquina voltados a dispositivos com recursos limitados.
+
+A câmera integrada ao módulo Sense atua como principal dispositivo de entrada do sistema. Ela é utilizada tanto para a captura das imagens enviadas ao Gemini quanto para a aquisição dos quadros processados localmente pelo modelo do Edge Impulse.
+
+Nos modos de descrição, diferentes configurações do sensor são aplicadas de acordo com a finalidade da captura, como análise de riscos, objetos próximos ou cenas mais amplas. Para o processamento local, a imagem é capturada em uma resolução adequada ao pipeline de inferência e posteriormente preparada pelo software.
+
+| Componente | Função no projeto |
+|---|---|
+| Seeed Studio XIAO ESP32-S3 Sense | Processamento central, conectividade Wi-Fi e controle dos periféricos |
+| Câmera do módulo Sense | Captura de imagens para processamento em nuvem e inferência local |
+| Interface de áudio PDM | Transmissão digital das amostras de áudio |
+| Fones ou caixa de som utilizada nos testes | Reprodução da resposta auditiva |
+| Cabo USB | Alimentação, programação e comunicação com o Monitor Serial |
+| Jumpers e conexões | Interligação entre a placa e a saída de áudio |
+
+| Sinal | Pino da XIAO ESP32-S3 |
+|---|---|
+| Dados PDM | GPIO utilizado no projeto |
+| Clock PDM | GPIO utilizado no projeto |
+| Terra | GND |
 
 ### 2.3 Arquitetura de Software
 <div align="justify">
@@ -115,3 +142,4 @@ por que foi necessário dividir o projeto em módulos de teste antes da integra�
 
 ## 7. Referências
 
+O desenvolvimento foi conduzido de forma incremental, com a criação e validação de módulos separados para captura de imagem, comunicação Wi-Fi, processamento por inteligência artificial, síntese de voz, armazenamento e reprodução de áudio. Após os testes individuais, esses componentes foram integrados em um único sistema. Como resultado, foi obtido um protótipo capaz de capturar imagens, gerar descrições textuais e reproduzi-las em áudio, além de executar inferências localmente. O sistema ainda apresenta limitações relacionadas ao tempo de resposta, à dependência de conexão com a internet e à integração entre alguns modos de funcionamento.
