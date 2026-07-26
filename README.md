@@ -143,19 +143,53 @@ por que foi necessário dividir o projeto em módulos de teste antes da integra�
 
 ## 3. Resultados
 
-#### Estado da montagem física
+#### Funcionalidades implementadas
+Ao final do desenvolvimento, foram implementadas e integradas as seguintes funcionalidades:
 
+- conexão da XIAO ESP32-S3 Sense a uma rede Wi-Fi;
+- seleção de diferentes modos de funcionamento;
+- configuração da câmera conforme o modo selecionado;
+- captura de imagens em formato JPEG;
+- conversão das imagens para Base64;
+- envio de imagens e prompts ao Gemini;
+- recebimento e tratamento das descrições textuais;
+- envio do texto ao Azure Speech;
+- recebimento e armazenamento temporário do áudio em formato WAV;
+- leitura dos dados PCM presentes no arquivo;
+- reprodução do áudio por meio da saída PDM;
+- remoção do arquivo temporário após a reprodução;
+- execução local de um modelo de visão computacional desenvolvido no Edge Impulse.
+
+O fluxo de processamento em nuvem foi validado de forma completa. Durante os testes, o dispositivo capturou imagens, enviou os dados ao Gemini e recebeu descrições coerentes com as cenas observadas. As descrições retornadas foram encaminhadas ao Azure Speech e convertidas em arquivos de áudio reproduzidos pelo protótipo.
+
+A integração com o LittleFS permitiu armazenar temporariamente o arquivo WAV recebido. Após a leitura e reprodução das amostras PCM pela saída PDM, o arquivo foi removido, liberando novamente o espaço de armazenamento.
+
+Os testes também demonstraram que os modos de descrição conseguem alterar o foco da resposta por meio das configurações de câmera e dos prompts enviados ao Gemini. Dessa forma, o sistema pode priorizar informações relacionadas à mobilidade, objetos próximos ou características gerais do ambiente.
+
+#### Desempenho e tempos de resposta
+
+Para avaliar o comportamento do sistema, foram adicionadas medições de tempo às principais etapas do fluxo. Em uma execução de teste, foram obtidos os seguintes valores:
+
+| Etapa do processamento | Tempo observado |
+|---|---:|
+| Configuração da câmera | 261 ms |
+| Captura e conversão para Base64 | 312 ms |
+| Requisição ao Gemini | 9,547 s |
+| Geração e download do áudio pelo Azure Speech | 37,892 s |
+| Reprodução do áudio | 17,372 s |
+| Fluxo completo | 65,808 s |
+
+Os valores correspondem a uma execução específica e podem variar de acordo com a qualidade da conexão, a disponibilidade dos serviços, o tamanho da imagem, a extensão do texto gerado e a duração do áudio.
+
+As medições indicam que a captura e a preparação da imagem representam uma parcela pequena do tempo total. A maior latência ocorre na síntese de voz, no download do arquivo e na reprodução do áudio.
+
+#### Limitações
 O hardware desenvolvido corresponde a um protótipo de bancada destinado à validação das funções de captura, processamento e reprodução de áudio. Nesta etapa, não foram desenvolvidos a estrutura mecânica, a alimentação portátil, os controles físicos nem a forma de fixação em uma bengala.
 
 Assim, o projeto valida principalmente a viabilidade do sistema eletrônico e de software. A integração em um dispositivo portátil e ergonomicamente adequado permanece como uma etapa futura.
 
-### 3.1 Funcionalidades implementadas 
-### 3.2 Desempenho e tempo de resposta
-### 3.3 Limitações
 
 ## 4. Como reproduzir o projeto
-
-## 5. Conclusão
 
 ## 6. Documentação complementar
 
