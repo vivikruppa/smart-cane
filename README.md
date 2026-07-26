@@ -5,17 +5,17 @@ Este projeto consiste no desenvolvimento de um <strong>dispositivo assistivo bas
 
 ## 1. Resumo do Projeto
 
-### Objetivo
+#### Objetivo
 
 Este projeto apresenta o desenvolvimento de um protótipo de dispositivo assistivo voltado ao apoio de pessoas com deficiência visual na interpretação de informações presentes no ambiente. A proposta foi concebida como uma etapa inicial para uma possível integração futura a uma smart cane, explorando o uso de hardware embarcado de baixo custo, visão computacional e retorno auditivo como recursos de acessibilidade.
 
-### Funcionamento geral
+#### Funcionamento geral
 
 O dispositivo é baseado na placa Seeed Studio XIAO ESP32-S3 Sense e utiliza uma câmera para capturar informações visuais do ambiente. A partir dessas imagens, o sistema pode gerar descrições de objetos, textos e características do espaço ao redor, além de executar um modelo local de detecção de objetos. As informações produzidas podem ser apresentadas ao usuário por meio de áudio.
 
 Para mais detalhes, consulte a seção [Sistema Desenvolvido](#2-sistema-desenvolvido). 
 
-### Tecnologias utilizadas
+#### Tecnologias utilizadas
 
 Durante o desenvolvimento, foram estudados temas relacionados a sistemas embarcados, visão computacional, inteligência artificial em nuvem, TinyML, comunicação com APIs, síntese de voz, formatos digitais de áudio e gerenciamento de memória em microcontroladores.
 
@@ -23,7 +23,7 @@ Entre as principais tecnologias utilizadas estão a XIAO ESP32-S3 Sense, o frame
 
 Para mais detalhes e justificativas sobre as tecnologias escolhidas, consulte a seção [Arquitetura de software](#23-arquitetura-de-software).
 
-### Resultados
+#### Resultados
 
 Como resultado, foi obtido um protótipo funcional capaz de capturar imagens, produzir descrições textuais, convertê-las em áudio e executar inferências localmente. O projeto também permitiu avaliar limitações relacionadas ao tempo de resposta, à conectividade, aos recursos de memória e à integração entre diferentes módulos de software.
 
