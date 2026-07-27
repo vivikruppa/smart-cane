@@ -15,12 +15,27 @@ gerenciamento de memória no ESP32.
 ### 1.2 PDM 
 
 ## 2. Subprojetos e testes
-Teste da câmera
-Comunicação com o Gemini
-Treinamento do modelo de Detecção de Objetos 
-Saída PDM pcom um sinal simples 
-Comunicação com a Azure Speech 
-Integração Completa 
+
+### 2.1 Implementação do algoritmo para análise e reconhecimento de objetos e ambientes 
+
+Esse subprojeto tem o objetivo de implementar um algoritmo de análise e reconhecimento de objetos e ambientes, para que este possa ser utilizado no ESP32S3, utilizando as capacidades de uma LLM atual de nivel básico.
+Devido ao fato da implementação desse subprojeto ser muito mais complexa e dominante que o subprojeto 2, ele acaba influenciando muito mais o rumo que o Projeto como um todo toma em termos de software 
+
+Devido a natureza inclusiva do projeto, foi optada por uma linguagem capaz de transmitir informação de forma mais rápida e capaz de se comunicar com os componentes externos de maneira simples, por isso a linguagem escolhida do nosso projeto foi C++, conforme o andamento da disciplina, também percebemos que a escolha foi ideal devido a pouca quantidade de memória que a linguagem consome quando comparada à outras alternativas como Micropython e CircuitPython.
+
+Essa parte do projeto foi desenvolvido através de Arduino IDE e PlatformIO e seu desenvolvimento foi voltado a orientação de objetos, levando a criação de módulos distintos para tratar de cada uma das funcionalidades e requisitos presentes no projeto
+
+
+### 2.2 Treinamento do modelo de Detecção de Objetos 
+
+Inicialmente, o objetivo do modelo de detecção de objetos era 
+
+### 2.3 Saída PDM pcom um sinal simples
+
+Durante a aula do dia 08 de julho, testou-se 
+
+### 2.4 Comunicação com uma API TTS 
+
 
 ## 3. Problemas encontrados 
 Modelo de Detecção de Objetos 
