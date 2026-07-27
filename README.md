@@ -147,14 +147,13 @@ Algumas decisões foram adotadas para reduzir o acoplamento entre os módulos e 
 
 ## 3. Resultados
 
-#### Validação do sistema integrado
+#### Validação funcional do sistema integrado
 
 Os testes realizados permitiram validar o fluxo integrado de captura de imagem, geração de descrição textual e reprodução da resposta em áudio. Nos modos baseados em serviços de nuvem, a XIAO ESP32-S3 Sense foi capaz de capturar imagens, enviá-las ao Gemini juntamente com o prompt correspondente ao modo selecionado e receber uma descrição da cena.
 
 O texto retornado foi encaminhado ao Azure Speech, que gerou um arquivo WAV armazenado temporariamente no LittleFS. O arquivo foi interpretado pelo módulo de reprodução, e suas amostras PCM foram transmitidas pela saída PDM. Após a reprodução, o arquivo temporário foi removido.
 
 Também foi verificado que a alteração dos prompts permite direcionar o conteúdo das respostas para diferentes objetivos, como identificação de riscos durante o deslocamento, análise de objetos próximos e descrição geral do ambiente.
-
 
 O fluxo de processamento em nuvem foi validado de forma completa. Durante os testes, o dispositivo capturou imagens, enviou os dados ao Gemini e recebeu descrições coerentes com as cenas observadas. As descrições retornadas foram encaminhadas ao Azure Speech e convertidas em arquivos de áudio reproduzidos pelo protótipo.
 
@@ -184,7 +183,11 @@ Os valores correspondem a uma execução específica e podem variar de acordo co
 
 As medições indicam que a captura e a preparação da imagem representam uma parcela pequena do tempo total. A maior latência ocorre na síntese de voz, no download do arquivo e na reprodução do áudio.
 
-### 3.4 Limitações atuais
+#### Confiabilidade das requisições e estabilidade do sistema
+
+#### Validação da inferência local 
+
+#### Limitações Atuais
 
 Apesar da validação dos principais fluxos, o protótipo ainda apresenta limitações relacionadas ao uso de serviços externos e ao estágio atual de integração.
 
