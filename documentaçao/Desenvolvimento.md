@@ -28,7 +28,10 @@ Essa parte do projeto foi desenvolvido através de Arduino IDE e PlatformIO e se
 
 ### 2.2 Treinamento do modelo de Detecção de Objetos 
 
-Inicialmente, o objetivo do modelo de detecção de objetos era 
+Inicialmente, o modelo de detecção de objetos foi idealizado com base nos resultados documentados no artigo ["Edge AI Smart Cane for Real-Time Indoor Localization and Vision-Based Obstacle Detection"](https://ieeexplore.ieee.org/document/11368785), onde construiu-se o um modelo de detecção de objetos com cinco classes totais (background,water fountain, stair,warning
+stripe, trash bin, and warning sign), capaz de realizar inferências localmente ESP32-CAM e com um F1-score de teste de 97.4%, a partir da pipeline de treinamento de TinyML da plataforma Edge Impulse. 
+
+
 
 ### 2.3 Saída PDM pcom um sinal simples
 
