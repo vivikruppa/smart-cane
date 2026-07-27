@@ -11,7 +11,7 @@ Este projeto apresenta o desenvolvimento de um protótipo de dispositivo assisti
 
 #### Funcionamento geral
 
-O dispositivo é baseado na placa Seeed Studio XIAO ESP32-S3 Sense e utiliza uma câmera para capturar informações visuais do ambiente. A partir dessas imagens, o sistema pode gerar descrições de objetos, textos e características do espaço ao redor, além de executar um modelo local de detecção de objetos. As informações produzidas podem ser apresentadas ao usuário por meio de áudio. 
+O dispositivo é baseado na placa Seeed Studio XIAO ESP32-S3 Sense e utiliza uma câmera para capturar informações visuais do ambiente. A partir dessas imagens, o sistema pode gerar descrições de objetos, textos e características do espaço ao redor. As informações produzidas podem ser apresentadas ao usuário por meio de áudio. 
 
 #### Tecnologias utilizadas
 
@@ -23,7 +23,9 @@ Para mais detalhes sobre hardware, software e fluxo de processamento do projeto,
 
 #### Resultados
 
-Como resultado, foi obtido um protótipo funcional capaz de capturar imagens, produzir descrições textuais, convertê-las em áudio e executar inferências localmente. O projeto também permitiu avaliar limitações relacionadas ao tempo de resposta, à conectividade, aos recursos de memória e à integração entre diferentes módulos de software.
+Como resultado, foi obtido um protótipo funcional capaz de capturar imagens, produzir descrições textuais, convertê-las em áudio. O projeto também permitiu avaliar limitações relacionadas ao tempo de resposta, à conectividade, aos recursos de memória e à integração entre diferentes módulos de software.
+
+O modelo de detecção de objetos foi treinado, porém não foi incluído no 
 
 Para mais detalhes, consulte a seção [Resultados](#3-resultados).
 
