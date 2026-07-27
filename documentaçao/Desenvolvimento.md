@@ -12,8 +12,9 @@ Devido a natureza inclusiva do projeto, foi optada por uma linguagem capaz de tr
 
 Essa parte do projeto foi desenvolvido através de Arduino IDE e PlatformIO e seu desenvolvimento foi voltado a orientação de objetos, levando a criação de módulos distintos para tratar de cada uma das funcionalidades e requisitos presentes no projeto
 
-
 ### 1.2 Treinamento do modelo de Detecção de Objetos 
+
+Nesse subprojeto, relatamos o desenvolvido de um modelo de detecção de objetos executado localmente no ESP32-S3. Essa abordagem permite avaliar uma alternativa com menor dependência de conexão com a internet, menor tempo de resposta e maior preservação das imagens capturadas, já que o processamento ocorre no próprio dispositivo.
 
 Inicialmente, o modelo de detecção de objetos foi idealizado com base nos resultados documentados no artigo ["Edge AI Smart Cane for Real-Time Indoor Localization and Vision-Based Obstacle Detection"](https://ieeexplore.ieee.org/document/11368785). No artigo, detalha-se a construção de um modelo capaz de detectar cinco classes totais (background, water fountain, stair, warning
 stripe, trash bin, and warning sign), que realiza inferências locais, a partir de uma ESP32-CAM, e obtêm um F1-score de teste de 97.4%. Tal modelo foi elaborado a partir da pipeline de treinamento de TinyML, da plataforma Edge Impulse.
@@ -43,9 +44,6 @@ O dataset utilizado para o treinamento desse modelo consiste em 1,277 imagens ad
 <img width="542" height="822" alt="image" src="https://github.com/user-attachments/assets/2cf5f798-5ee6-4329-8012-db45c4d883e7" /> 
 
 O modelo escolhido para ser implementado no projeto final foi o Modelo Only Sign (que pode ser acessado através da plataforma Edge Impulse por: https://studio.edgeimpulse.com/public/954575/live). 
-
-Algumas das principais dificuldades no treinamento do modelo 
-
 
 ### 2.3 Saída PDM pcom um sinal simples
 
