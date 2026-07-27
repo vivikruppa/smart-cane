@@ -5,13 +5,13 @@ Este projeto consiste no desenvolvimento de um <strong>dispositivo assistivo bas
 
 ## 1. Resumo do Projeto
 
-#### Objetivo
+#### Objetivo e Funcionamento Geral 
 
 Este projeto apresenta o desenvolvimento de um protótipo de dispositivo assistivo voltado ao apoio de pessoas com deficiência visual na interpretação de informações presentes no ambiente. A proposta foi concebida como uma etapa inicial para uma possível integração futura a uma <strong>Smart Cane</strong>, explorando o uso de hardware embarcado de baixo custo, visão computacional e retorno auditivo como recursos de acessibilidade.
 
-#### Funcionamento geral
+O dispositivo é baseado na placa Seeed Studio XIAO ESP32-S3 Sense e utiliza uma câmera para capturar informações visuais do ambiente. A partir dessas imagens, o sistema pode gerar descrições de objetos, textos e características do espaço ao redor. As informações produzidas podem ser apresentadas ao usuário por meio de áudio.
 
-O dispositivo é baseado na placa Seeed Studio XIAO ESP32-S3 Sense e utiliza uma câmera para capturar informações visuais do ambiente. A partir dessas imagens, o sistema pode gerar descrições de objetos, textos e características do espaço ao redor. As informações produzidas podem ser apresentadas ao usuário por meio de áudio. 
+Além do fluxo baseado em serviços externos, o projeto também previu o desenvolvimento de um modelo de detecção de objetos executado localmente na placa. Essa abordagem foi pensada para permitir o reconhecimento de elementos relevantes do ambiente com menor dependência de conexão com a internet e maior autonomia do dispositivo.
 
 #### Tecnologias utilizadas
 
@@ -23,9 +23,11 @@ Para mais detalhes sobre hardware, software e fluxo de processamento do projeto,
 
 #### Resultados
 
-Como resultado, foi obtido um protótipo funcional capaz de capturar imagens, produzir descrições textuais, convertê-las em áudio. O projeto também permitiu avaliar limitações relacionadas ao tempo de resposta, à conectividade, aos recursos de memória e à integração entre diferentes módulos de software.
+Como resultado, foi obtido um protótipo funcional capaz de capturar imagens, produzir descrições textuais e convertê-las em áudio. O projeto também permitiu avaliar limitações relacionadas ao tempo de resposta, à conectividade, aos recursos de memória e à integração entre diferentes módulos de software.
 
-O modelo de detecção de objetos foi treinado, porém não foi incluído no 
+Inicialmente, o projeto previa a utilização de um modelo de detecção de objetos executado localmente na XIAO ESP32-S3 Sense, com o objetivo de reconhecer obstáculos ou sinalizações relevantes sem depender exclusivamente de serviços externos. Para essa etapa, foi utilizada uma biblioteca gerada pelo Edge Impulse, contendo o modelo treinado e o código necessário para realizar a captura das imagens e a inferência diretamente na placa.
+
+O funcionamento do modelo foi validado de forma independente na Arduino IDE. Entretanto, não foi possível concluir de maneira satisfatória a incorporação desse módulo ao fluxo completo do sistema, que também envolve captura de imagem, comunicação com serviços externos, síntese de voz e reprodução de áudio.
 
 Para mais detalhes, consulte a seção [Resultados](#3-resultados).
 
@@ -159,6 +161,10 @@ O fluxo de processamento em nuvem foi validado de forma completa. Durante os tes
 A integração com o LittleFS permitiu armazenar temporariamente o arquivo WAV recebido. Após a leitura e reprodução das amostras PCM pela saída PDM, o arquivo foi removido, liberando novamente o espaço de armazenamento.
 
 Os testes também demonstraram que os modos de descrição conseguem alterar o foco da resposta por meio das configurações de câmera e dos prompts enviados ao Gemini. Dessa forma, o sistema pode priorizar informações relacionadas à mobilidade, objetos próximos ou características gerais do ambiente.
+
+O funcionamento do modelo foi validado de forma independente na Arduino IDE. Após ajustes na configuração da câmera e na alocação de memória, a placa conseguiu inicializar o sensor, processar as imagens e executar inferências contínuas localmente, chegando a identificar a classe treinada e retornar a respectiva caixa delimitadora. Entretanto, não foi possível concluir de maneira satisfatória a incorporação desse módulo ao fluxo completo do sistema, que também envolve captura de imagem, comunicação com serviços externos, síntese de voz e reprodução de áudio.
+
+Dessa forma, a inferência local permaneceu como um módulo funcional e validado separadamente, mas ainda não totalmente integrado ao protótipo final. Esse resultado evidencia que o modelo é executável no hardware escolhido, porém também demonstra a necessidade de ajustes adicionais relacionados ao gerenciamento da câmera, ao uso de memória e à compatibilidade entre os diferentes componentes do sistema.
 
 #### Desempenho e tempos de resposta
 
