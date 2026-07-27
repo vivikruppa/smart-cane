@@ -22,8 +22,10 @@ Saída PDM pcom um sinal simples
 Comunicação com a Azure Speech 
 Integração Completa 
 
-## 3. Problemas encontrados e decisões técnicas
+## 3. Problemas encontrados 
 Modelo de Detecção de Objetos 
 
 
 ## 4. Aprendizados
+
+## 5. Referências
