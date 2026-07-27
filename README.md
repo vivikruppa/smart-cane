@@ -58,9 +58,9 @@ O quarto modo utiliza um fluxo diferente dos demais. Em vez de enviar a imagem p
 ### 2.1 Fluxo de processamento
 
 A arquitetura do sistema contempla três fluxos principais: 
-1. **Fluxo de imagem para texto:** a imagem capturada pela câmera é convertida para Base64 e enviada ao modelo Gemini, juntamente com um prompt correspondente ao modo selecionado. O serviço processa a imagem e retorna uma descrição textual.
+1. **Fluxo de imagem para texto:** a câmera captura uma imagem em formato JPEG, que é convertida para Base64 no ESP32-S3. A imagem codificada e o prompt correspondente ao modo selecionado são organizados em uma requisição JSON e enviados ao Gemini por meio de uma conexão HTTPS. O serviço processa a imagem na nuvem e retorna uma resposta em JSON, da qual o dispositivo extrai a descrição textual.
 
-2. **Fluxo de texto para áudio:** a descrição produzida pelo Gemini é encaminhada ao Azure Speech, responsável pela síntese de voz. O áudio retornado em formato WAV é armazenado temporariamente no LittleFS, interpretado pelo módulo de reprodução e enviado pela saída PDM.
+2. **Fluxo de texto para áudio:** a descrição produzida pelo Gemini é extraída e encaminhada ao Azure Speech em uma requisição SSML. O serviço realiza a síntese de voz na nuvem e retorna um arquivo WAV contendo áudio PCM mono, com 16 bits e taxa de amostragem de 24 kHz. O arquivo é armazenado temporariamente no LittleFS, validado e interpretado pelo `WavPlayer`. As amostras PCM são então transmitidas pelo módulo `PdmOutput` por meio da saída PDM. Após a reprodução, o arquivo temporário é removido.
 
 3. **Fluxo de inferência local:** a imagem capturada é processada diretamente no ESP32-S3 por meio de um modelo desenvolvido no Edge Impulse. Nesse fluxo, não há envio da imagem para serviços externos.
 
