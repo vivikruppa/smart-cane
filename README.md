@@ -7,13 +7,11 @@ Este projeto consiste no desenvolvimento de um <strong>dispositivo assistivo bas
 
 #### Objetivo
 
-Este projeto apresenta o desenvolvimento de um protótipo de dispositivo assistivo voltado ao apoio de pessoas com deficiência visual na interpretação de informações presentes no ambiente. A proposta foi concebida como uma etapa inicial para uma possível integração futura a uma smart cane, explorando o uso de hardware embarcado de baixo custo, visão computacional e retorno auditivo como recursos de acessibilidade.
+Este projeto apresenta o desenvolvimento de um protótipo de dispositivo assistivo voltado ao apoio de pessoas com deficiência visual na interpretação de informações presentes no ambiente. A proposta foi concebida como uma etapa inicial para uma possível integração futura a uma <strong>Smart Cane</strong>, explorando o uso de hardware embarcado de baixo custo, visão computacional e retorno auditivo como recursos de acessibilidade.
 
 #### Funcionamento geral
 
-O dispositivo é baseado na placa Seeed Studio XIAO ESP32-S3 Sense e utiliza uma câmera para capturar informações visuais do ambiente. A partir dessas imagens, o sistema pode gerar descrições de objetos, textos e características do espaço ao redor, além de executar um modelo local de detecção de objetos. As informações produzidas podem ser apresentadas ao usuário por meio de áudio.
-
-Para mais detalhes, consulte a seção [Sistema Desenvolvido](#2-sistema-desenvolvido). 
+O dispositivo é baseado na placa Seeed Studio XIAO ESP32-S3 Sense e utiliza uma câmera para capturar informações visuais do ambiente. A partir dessas imagens, o sistema pode gerar descrições de objetos, textos e características do espaço ao redor, além de executar um modelo local de detecção de objetos. As informações produzidas podem ser apresentadas ao usuário por meio de áudio. 
 
 #### Tecnologias utilizadas
 
@@ -21,7 +19,7 @@ Durante o desenvolvimento, foram estudados temas relacionados a sistemas embarca
 
 Entre as principais tecnologias utilizadas estão a XIAO ESP32-S3 Sense, o framework Arduino com PlatformIO, o Gemini para análise de imagens, o Azure Speech para síntese de voz, o Edge Impulse para inferência local e o LittleFS para armazenamento temporário.
 
-Para mais detalhes e justificativas sobre as tecnologias escolhidas, consulte a seção [Arquitetura de software](#23-arquitetura-de-software).
+Para mais detalhes sobre hardware, software e fluxo de processamento do projeto, consulte a seção [Sistema Desenvolvido](#2-sistema-desenvolvido).
 
 #### Resultados
 
@@ -100,7 +98,7 @@ A saída auditiva do protótipo é realizada por meio de uma interface PDM contr
 
 A escolha dessa abordagem permitiu desenvolver a reprodução de áudio diretamente a partir dos recursos disponíveis no microcontrolador, sem a adoção do módulo amplificador com DAC inicialmente considerado. O áudio recebido do serviço de síntese de voz é convertido pelo software em amostras PCM, que são transmitidas pelo periférico configurado para a saída PDM.
 
-Para mais detalhes sobre a técnica PDM e referências utilizadas, consulte a sessão 
+Para mais detalhes sobre a técnica PDM e referências utilizadas, consulte a sessão [Subprojetos e testes](docs/desenvolvimento.md#2-subprojetos-e-testes).
 
 ### 2.3 Arquitetura de Software
 <div align="justify">
@@ -171,6 +169,7 @@ Os testes também demonstraram que os modos de descrição conseguem alterar o f
 
 #### Desempenho e tempos de resposta
 
+Falar sobre recursos de memória
 Para avaliar o comportamento do sistema, foram adicionadas medições de tempo às principais etapas do fluxo. Em uma execução de teste, foram obtidos os seguintes valores:
 
 | Etapa do processamento | Tempo observado |
