@@ -40,8 +40,22 @@ Baseando-se nos resultados do artigo e no tutorial ["TinyML Made Easy: Object De
 5. Teste do modelo antes do deploy (Live Classification); 
 6. Deploy no ESP32S3; 
 
-Falar das divergências dos modelos variados
-O modelo escolhido para ser implementado no projeto final (que pode ser acessado através da plataforma Edge Impulse através de: https://studio.edgeimpulse.com/public/954575/live) foi o de detecção de uma classe: placas do tipo "Piso Molhado". 
+Dos modelos construídos através da plataforma, listamos abaixo aqueles que reproduziram resultados mais pertinentes para o nosso experimento: 
+
+#### Modelo de detecção de uma classe (stairs)
+O dataset utilizado para o treinamento desse modelo foi feito por nós, através da captura de 264 imagens pela câmera do módulo do ESP32S3 e rotulação feita a partir da ferramenta "AI labeling", nativa do Edge Impulse. Para o treinamento, as imagens foram configuradas para a dimensão de 320x320, com 50 épocas de treinamento, learning rate = 0,001 e utilizando a rede neural FOMO (Faster Objects, More Objects) MobileNetV2 0.35. O modelo apresentou performance muito abaixa do esperado, com zero sucesso para as métricas de Precisão, Recall e F1 Score no set de validação para teste. A hipótese para a ocorrência desse resultado está no dataset construído, que é considerado pequeno para tarefas de detecção de objetos. Desse experimento, decidimos que não criaríamos um dataset próprio, mas utilizaríamos datasets públicos, com imagens previamente rotuladas, dispostas em repositórios como Kaggle e Roboflow. 
+
+#### Modelo de detecção de três classes (pothole, manhole, sign)
+O dataset utilizado para o treinamento desse modelo consiste em 2,274 imagens adquiridas de um repositório público, correspondentes a classes pothole, manhole e sign, já rotuladas para a tarefa de detecção de objetos. Para o treinamento, as imagens foram configuradas para a dimensão de 96x96, com 60 épocas de treinamento, learning rate = 0,001 e utilizando a rede neural FOMO (Faster Objects, More Objects) MobileNetV2 0.35. A performance resultante do treinamento, avaliada a partir do set de validação, pode ser observada na imagem abaixo: 
+<img width="575" height="896" alt="image" src="https://github.com/user-attachments/assets/4e0742e2-bc90-457d-a60a-d56105bbecd3" />
+
+Uma limitação observada durante o treinamento desse modelo foi que, segundo regras impostas pela plataforma Edge Impulse, o tempo de treinamento é limitado a apenas uma hora. Dessa forma, os treinamentos consequentes do modelo foram prejudicados, já que não foi possível incluir novas imagens para cada classe, aumentando o tamanho do dataset, ou aumentar o número de épocas de treinamento, a fim de verificar melhoras na performance do modelo, pois ambas estratégias aumentariam o tempo de treinamento. Dessa experimento, decidimos que os próximos modelos treinados seriam limitados a apenas uma classe, como forma de permitir um maior número de imagens por classe, a fim de observar se o aumento do dataset permitiria uma melhora na performance do modelo.   
+
+#### Modelo Only Sign (sign)
+O dataset utilizado para o treinamento desse modelo consiste em 1,277 imagens adquiridas de um repositório público, sendo 879 destas correspondentes a classe sign, que é representada por uma placa de chão do tipo "Cuidado, Piso Molhada", tipicamente da cor amarela, e o restante representando a classe background, consistindo de placas que não são do tipo "Cuidado, Piso Molhado", como placas de trânsito. O dataset da classe sign, adquirido a partir de um repositório público, foi previmanete rotulado e enriquecido através da técnica de Data Augmentation. Para o treinamento, as imagens foram configuradas para a dimensão de 96x96, com 60 épocas de treinamento, learning rate = 0,001 e utilizando a rede neural FOMO (Faster Objects, More Objects) MobileNetV2 0.35. A performance resultante do treinamento, avaliada a partir do set de validação, pode ser observada na imagem abaixo:   
+<img width="542" height="822" alt="image" src="https://github.com/user-attachments/assets/2cf5f798-5ee6-4329-8012-db45c4d883e7" /> 
+
+O modelo escolhido para ser implementado no projeto final foi o Modelo Only Sign (que pode ser acessado através da plataforma Edge Impulse por: https://studio.edgeimpulse.com/public/954575/live). 
 
 Algumas das principais dificuldades no treinamento do modelo 
 
