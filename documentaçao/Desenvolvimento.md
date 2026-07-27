@@ -28,8 +28,18 @@ Essa parte do projeto foi desenvolvido através de Arduino IDE e PlatformIO e se
 
 ### 2.2 Treinamento do modelo de Detecção de Objetos 
 
-Inicialmente, o modelo de detecção de objetos foi idealizado com base nos resultados documentados no artigo ["Edge AI Smart Cane for Real-Time Indoor Localization and Vision-Based Obstacle Detection"](https://ieeexplore.ieee.org/document/11368785), onde construiu-se o um modelo de detecção de objetos com cinco classes totais (background,water fountain, stair,warning
-stripe, trash bin, and warning sign), capaz de realizar inferências localmente ESP32-CAM e com um F1-score de teste de 97.4%, a partir da pipeline de treinamento de TinyML da plataforma Edge Impulse. 
+Inicialmente, o modelo de detecção de objetos foi idealizado com base nos resultados documentados no artigo ["Edge AI Smart Cane for Real-Time Indoor Localization and Vision-Based Obstacle Detection"](https://ieeexplore.ieee.org/document/11368785). No artigo, detalha-se a construção de um modelo capaz de detectar cinco classes totais (background, water fountain, stair, warning
+stripe, trash bin, and warning sign), que realiza inferências locais, a partir de uma ESP32-CAM, e obtêm um F1-score de teste de 97.4%. Tal modelo foi elaborado a partir da pipeline de treinamento de TinyML, da plataforma Edge Impulse.
+
+Baseando-se nos resultados do artigo e no tutorial ["TinyML Made Easy: Object Detection with XIAO ESP32S3 Sense"](https://www.hackster.io/mjrobot/tinyml-made-easy-object-detection-with-xiao-esp32s3-sense-6be28d), construímos variados modelos de detecção de objetos, seguindo a pipeline de treinamento da Edge Impulse, que consiste em: 
+
+1. Coleta de dados / imagens brutas; 
+2. Rotulação das imagens e definição de quais imagens serão utilizadas para treinamento e quais serão utilizadas para teste; 
+3. Pré-processamento das imagens; 
+4. Treinamento do modelo; 
+5. Teste do modelo antes do deploy (Live Classification); 
+6. Deploy no ESP32S3; 
+
 
 
 
