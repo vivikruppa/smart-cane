@@ -143,6 +143,9 @@ por que foi necessário dividir o projeto em módulos de teste antes da integra�
 
 ## 3. Resultados
 
+O desenvolvimento foi conduzido de forma incremental, com a criação e validação de módulos separados para captura de imagem, comunicação Wi-Fi, processamento por inteligência artificial, síntese de voz, armazenamento e reprodução de áudio. Após os testes individuais, esses componentes foram integrados em um único sistema. Como resultado, foi obtido um protótipo capaz de capturar imagens, gerar descrições textuais e reproduzi-las em áudio, além de executar inferências localmente. O sistema ainda apresenta limitações relacionadas ao tempo de resposta, à dependência de conexão com a internet e à integração entre alguns modos de funcionamento.
+
+
 #### Funcionalidades implementadas
 Ao final do desenvolvimento, foram implementadas e integradas as seguintes funcionalidades:
 
@@ -188,11 +191,7 @@ O hardware desenvolvido corresponde a um protótipo de bancada destinado à vali
 
 Assim, o projeto valida principalmente a viabilidade do sistema eletrônico e de software. A integração em um dispositivo portátil e ergonomicamente adequado permanece como uma etapa futura.
 
+## 4. Documentação Complementar 
 
-## 4. Como reproduzir o projeto
-
-## 6. Documentação complementar
-
-## 7. Referências
-
-O desenvolvimento foi conduzido de forma incremental, com a criação e validação de módulos separados para captura de imagem, comunicação Wi-Fi, processamento por inteligência artificial, síntese de voz, armazenamento e reprodução de áudio. Após os testes individuais, esses componentes foram integrados em um único sistema. Como resultado, foi obtido um protótipo capaz de capturar imagens, gerar descrições textuais e reproduzi-las em áudio, além de executar inferências localmente. O sistema ainda apresenta limitações relacionadas ao tempo de resposta, à dependência de conexão com a internet e à integração entre alguns modos de funcionamento.
+O sistema foi desenvolvido de forma incremental, com testes separados dos módulos antes da integração. Mais detalhes estão disponíveis na
+[documentação de desenvolvimento](docs/desenvolvimento.md). 
