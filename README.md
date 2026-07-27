@@ -98,7 +98,7 @@ A saída auditiva do protótipo é realizada por meio de uma interface PDM contr
 
 A escolha dessa abordagem permitiu desenvolver a reprodução de áudio diretamente a partir dos recursos disponíveis no microcontrolador, sem a adoção do módulo amplificador com DAC inicialmente considerado. O áudio recebido do serviço de síntese de voz é convertido pelo software em amostras PCM, que são transmitidas pelo periférico configurado para a saída PDM.
 
-Para mais detalhes sobre a técnica PDM e referências utilizadas, consulte a sessão [Subprojetos e testes](docs/desenvolvimento.md#2-subprojetos-e-testes).
+Para mais detalhes sobre a técnica PDM e referências utilizadas, consulte a sessão [Subprojetos e testes](desenvolvimento.md#2-subprojetos-e-testes).
 
 ### 2.3 Arquitetura de Software
 <div align="justify">
