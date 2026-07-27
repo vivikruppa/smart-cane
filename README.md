@@ -64,6 +64,8 @@ A arquitetura do sistema contempla três fluxos principais:
 
 3. **Fluxo de inferência local:** a imagem capturada é processada diretamente no ESP32-S3 por meio de um modelo desenvolvido no Edge Impulse. Nesse fluxo, não há envio da imagem para serviços externos.
 
+![Fluxo de processamento de imagem, texto e áudio](documentacao/diagrama_fluxo_imagem_texto_audio.drawio.svg)
+
 ### 2.2 Arquitetura de Hardware
 
 Os componentes utilizados para a elaboração do protótipo são descritos na tabela abaixo: 
