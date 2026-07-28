@@ -1,16 +1,26 @@
 # Desenvolvimento do projeto
-O projeto foi desenvolvido incrementalmente, validando-se três módulos separados antes da integração (camera / api); (modelo OD); (TTS);  
 
 ## 1. Subprojetos e testes
 
 ### 1.1 Implementação do algoritmo para análise e reconhecimento de objetos e ambientes 
 
-Esse subprojeto tem o objetivo de implementar um algoritmo de análise e reconhecimento de objetos e ambientes, para que este possa ser utilizado no ESP32S3, utilizando as capacidades de uma LLM atual de nivel básico.
-Devido ao fato da implementação desse subprojeto ser muito mais complexa e dominante que o subprojeto 2, ele acaba influenciando muito mais o rumo que o Projeto como um todo toma em termos de software 
+Esse subprojeto tem o objetivo de implementar um algoritmo de análise e reconhecimento de objetos e ambientes, para que este possa ser utilizado no ESP32S3, utilizando as capacidades de uma LLM atual de nivel básico para que o mesmo possa ser usado para ajudar pessoas com deficiências visuais a reconhecer lugares desconhecidos ou algum objeto em específico. 
+Devido ao fato da implementação desse subprojeto ser muito mais complexa que o subprojeto 2, ele teve uma influência maior sobre mais o rumo do Projeto como um todo em termos de software. 
 
 Devido a natureza inclusiva do projeto, foi optada por uma linguagem capaz de transmitir informação de forma mais rápida e capaz de se comunicar com os componentes externos de maneira simples, por isso a linguagem escolhida do nosso projeto foi C++, conforme o andamento da disciplina, também percebemos que a escolha foi ideal devido a pouca quantidade de memória que a linguagem consome quando comparada à outras alternativas como Micropython e CircuitPython.
 
 Essa parte do projeto foi desenvolvido através de Arduino IDE e PlatformIO e seu desenvolvimento foi voltado a orientação de objetos, levando a criação de módulos distintos para tratar de cada uma das funcionalidades e requisitos presentes no projeto
+Cada módulo é uma classe com ambos os arquivos .cpp e .h, os seguintes módulos são: “Wi Fi”, “Camera”, “Utilities” e “SignInference”. 
+Cada uma dessas classes tem funções importantes para o funcionamento do ESP e necessárias para a execução de ambos os subprojetos.
+
+#### Funções essenciais
+
+takePhoto64: Função que tira a foto usando a câmera integrada no pŕoprio ESP, e chama uma função que transforma a foto em base64 e a retorna em forma de String.
+
+sendBase64toGemini: Função que tem como entrada a foto em base64 em forma de String, e um prompt em forma de String, ela realiza comunicação em HTTPS com o pacote contendo as entradas mencionadas, e recebe de volta do Gemini, uma resposta
+
+extractCleanText: Função que remove todo o barulho e Thought Signature da String Retornada por sendBase64toGemini, deixando apenas o prompt limpo para conversão TTS.
+
 
 ### 1.2 Treinamento do modelo de Detecção de Objetos 
 
