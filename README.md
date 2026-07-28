@@ -125,16 +125,6 @@ Essa organização permitiu desenvolver e testar partes do sistema separadamente
 | `LittleFS` | Armazena temporariamente o arquivo WAV gerado pelo serviço de síntese de voz. |
 | `secrets.h` | Mantém as credenciais da rede Wi-Fi e das APIs separadas do código principal. |
 
-#### Modelo de Inferência Local
-
-O modo 4 utiliza um modelo de detecção de objetos desenvolvido e treinado na plataforma [Edge Impulse](https://www.edgeimpulse.com). Após o treinamento, a plataforma gera uma biblioteca compatível com sistemas embarcados, contendo a estrutura do modelo, os parâmetros aprendidos e as funções necessárias para executar a inferência no microcontrolador.
-
-No firmware, o módulo `SignInference` realiza a integração entre a câmera e a biblioteca exportada. A imagem capturada em formato JPEG é convertida para RGB888, redimensionada para as dimensões de entrada exigidas pelo modelo e fornecida ao classificador por meio de uma função de leitura de pixels.
-
-A execução retorna a classe detectada e os valores de confiança. O processamento ocorre localmente, sem o envio da imagem para serviços externos.
-
-Para mais detalhes sobre o treinamento do modelo de detecção de objetos, consulte a sessão [Subprojetos e testes](desenvolvimento.md#2-subprojetos-e-testes).
-
 #### Decisões de arquitetura
 
 Algumas decisões foram adotadas para reduzir o acoplamento entre os módulos e adequar o sistema às limitações do microcontrolador:
