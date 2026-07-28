@@ -145,7 +145,7 @@ De modo geral, o sistema apresentou melhor desempenho em descrições amplas do 
 
 Além do fluxo baseado em serviços externos, o projeto previu um modo de detecção de objetos executado localmente na XIAO ESP32-S3 Sense. Para essa etapa, foi utilizado um modelo treinado e exportado pelo Edge Impulse, destinado ao reconhecimento da classe definida durante o treinamento. O funcionamento do modelo foi validado de forma independente na Arduino IDE. Entretanto, a integração desse módulo ao fluxo principal não foi concluída de maneira satisfatória. Embora o modo tenha sido incorporado ao projeto, sua operação conjunta com os demais componentes não foi estabilizada, especialmente em relação ao gerenciamento da câmera, à memória disponível e à compatibilidade com os outros módulos já presentes no sistema. Dessa forma, a inferência local permaneceu como um módulo funcional e validado separadamente, mas ainda não plenamente integrado ao protótipo final.
 
-Para mais detalhes sobre o treinamento do modelo de detecção de objetos, consulte a sessão [Subprojetos e testes](desenvolvimento.md#2-subprojetos-e-testes). 
+Para mais detalhes sobre o treinamento do modelo de detecção de objetos, consulte a sessão [Subprojetos e testes](documentaçao/Desenvolvimento.md). 
 
 #### Tempos de resposta, uso de memória e confiabilidade das requisições
 
