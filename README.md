@@ -186,17 +186,9 @@ No que diz respeito a confiabilidade das requisições, nas dez execuções anal
 
 #### Limitações Atuais
 
-Apesar da validação dos principais fluxos, o protótipo ainda apresenta limitações relacionadas ao uso de serviços externos e ao estágio atual de integração.
+Permanecem limitações de interação e construção física já que a seleção dos modos ainda é feita pelo Monitor Serial, sem botões ou outros controles acessíveis ao usuário. O sistema foi testado como protótipo de bancada, sem alimentação portátil, carcaça, fixação em bengala ou mecanismo de proteção para os componentes. Também não foi realizada uma avaliação formal com pessoas do público-alvo, o que impede conclusões sobre usabilidade, conforto, clareza das respostas e efetividade do dispositivo em situações reais de mobilidade. Além disso, o tempo até o início da reprodução ainda é elevado para uma aplicação de assistência em tempo real, especialmente porque as etapas de geração da descrição, síntese de voz e download do arquivo de áudio concentram a maior parte da latência observada.
 
-- os modos de descrição e síntese de voz dependem de conexão Wi-Fi e do acesso ao Gemini e ao Azure Speech;
-- o tempo de resposta pode variar conforme a rede e a disponibilidade dos serviços;
-- o tempo até o início da reprodução ainda é elevado para uma aplicação de assistência em tempo real;
-- o espaço disponível no LittleFS limita o tamanho dos arquivos de áudio que podem ser armazenados;
-- a inferência local ainda não produz uma resposta auditiva;
-- o modo de inferência apresenta um problema pendente na desinicialização da câmera;
-- a seleção dos modos ainda é realizada pelo Monitor Serial;
-- o sistema foi validado como protótipo de bancada, sem alimentação portátil, controles físicos, carcaça ou fixação em uma bengala;
-- ainda não foi realizada uma avaliação formal com usuários do público-alvo.
+O armazenamento temporário do áudio também impõe restrições. Embora o LittleFS tenha se mostrado suficiente para os arquivos gerados durante os testes, sua capacidade limita o tamanho máximo das respostas que podem ser convertidas em WAV e armazenadas antes da reprodução. Por esse motivo, a formulação de prompts voltados a descrições curtas e objetivas permanece importante tanto para reduzir o tempo de resposta quanto para evitar arquivos excessivamente grandes.
 
 ## 4. Documentação Complementar 
 
