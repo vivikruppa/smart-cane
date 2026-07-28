@@ -63,7 +63,7 @@ No sistema, o áudio é representado inicialmente por amostras PCM. Essas amostr
 
 #### Experimento inicial com a reprodução de WAV 
 
-Foi realizado um teste de reprodução de áudio a partir de um arquivo WAV. Para essa etapa, foi utilizado como referência [o código disponibilizado pelo Atomic14 no projeto `esp32-pdm-audio`](https://github.com/atomic14/esp32-pdm-audio/tree/main). O código original realiza a leitura de um arquivo `sample.wav` armazenado no sistema de arquivos da placa, extrai suas amostras PCM em blocos e as encaminha a uma classe de saída de áudio configurada para PDM. O código foi testado em aula, juntamente com a construção de um circuito que conectava o ESP32-S3 com um auto-falante capaz de filtrar em amplificar o sinal em PDM. 
+Foi realizado um teste de reprodução de áudio a partir de um arquivo WAV. Para essa etapa, foi utilizado como referência [o código disponibilizado pelo Atomic14 no projeto `esp32-pdm-audio`](https://github.com/atomic14/esp32-pdm-audio/tree/main). O código original realiza a leitura de um arquivo `sample.wav` armazenado no sistema de arquivos da placa, extrai suas amostras PCM em blocos e as encaminha a uma classe de saída de áudio configurada para PDM. O código foi testado em aula, juntamente com a montagem de um circuito que conectava o ESP32-S3 a uma caixa de som ativa, cujo circuito de entrada realizava a filtragem e a amplificação do sinal gerado.
 
 A partir desse exemplo, foram realizados testes e adaptações para a XIAO ESP32-S3 Sense e para a organização modular adotada no projeto. O código de saída PDM foi separado em funções próprias, permitindo posteriormente reutilizar o mesmo fluxo para reproduzir os arquivos WAV gerados pelo serviço de síntese de voz.
 
