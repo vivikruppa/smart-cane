@@ -193,4 +193,4 @@ O armazenamento temporário do áudio também impõe restrições. Embora o Litt
 ## 4. Documentação Complementar 
 
 O sistema foi desenvolvido de forma incremental, com testes separados dos módulos antes da integração. Mais detalhes estão disponíveis na
-[documentação de desenvolvimento](docs/desenvolvimento.md). 
+[documentação de desenvolvimento](documentaçao). 
