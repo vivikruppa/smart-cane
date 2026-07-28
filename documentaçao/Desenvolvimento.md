@@ -53,17 +53,21 @@ Além do teste de inferência realizado localmente na XIAO ESP32-S3 Sense, o mod
 
 ![Exemplo de possível falso positivo](documentaçao/falso-positivo-sensecraft.png)
 
-### 2.3 Saída PDM pcom um sinal simples
+### 2.3 Saída PDM com um sinal simples
+ 
+#### Justificativa para a escolha do PDM e Fluxo de Funcionamento
 
-Durante a aula do dia 08 de julho, testou-se 
+O projeto utiliza a XIAO ESP32-S3 Sense, cujo microcontrolador não possui DAC analógico interno. Isso significa que as amostras digitais de áudio não podem ser convertidas diretamente pelo próprio chip em uma tensão analógica convencional. Como alternativa, foi utilizado o periférico I2S do ESP32-S3 em modo PDM TX (a partir da referência teórica em: https://atomic14.substack.com/p/esp32-s3-no-dac).  Nesse modo, o microcontrolador recebe amostras PCM e as converte em um fluxo PDM, formado por pulsos digitais cuja densidade representa a amplitude do áudio. A escolha do PDM permitiu aproveitar um recurso já disponível no ESP32-S3 e reduzir a necessidade de componentes externos dedicados à conversão de áudio.
 
-### 2.4 Comunicação com uma API TTS 
+No sistema, o áudio é representado inicialmente por amostras PCM. Essas amostras são encaminhadas ao periférico I2S, configurado em modo PDM TX. O próprio hardware efetua a conversão de amostras PCM para amostras PDM. O sinal PDM ainda é digital, pois alterna entre níveis lógicos baixo e alto. A recuperação do áudio ocorre pela suavização desses pulsos, de modo que sua densidade média represente uma tensão variável correspondente ao sinal sonoro.
 
+#### Experimento inicial com a reprodução de WAV 
 
-## 3. Problemas encontrados 
-Modelo de Detecção de Objetos 
+Foi realizado um teste de reprodução de áudio a partir de um arquivo WAV. Para essa etapa, foi utilizado como referência [o código disponibilizado pelo Atomic14 no projeto `esp32-pdm-audio`](https://github.com/atomic14/esp32-pdm-audio/tree/main). O código original realiza a leitura de um arquivo `sample.wav` armazenado no sistema de arquivos da placa, extrai suas amostras PCM em blocos e as encaminha a uma classe de saída de áudio configurada para PDM. O código foi testado em aula, juntamente com a construção de um circuito que conectava o ESP32-S3 com um auto-falante capaz de filtrar em amplificar o sinal em PDM. 
 
+A partir desse exemplo, foram realizados testes e adaptações para a XIAO ESP32-S3 Sense e para a organização modular adotada no projeto. O código de saída PDM foi separado em funções próprias, permitindo posteriormente reutilizar o mesmo fluxo para reproduzir os arquivos WAV gerados pelo serviço de síntese de voz.
 
-## 4. Aprendizados
+#### Melhorias: utilização do módulo MAX98357A
 
-## 5. Referências
+Uma alternativa ao uso direto do PDM seria utilizar o [módulo MAX98357A](https://www.makerguides.com/pt/playing-audio-with-esp32-and-max98357-pt/). Nesse caso, o ESP32-S3 enviaria as amostras PCM pelo protocolo I2S padrão. O MAX98357A receberia esse áudio digital e realizaria internamente a conversão e a amplificação necessárias para alimentar um alto-falante. O PDM utilizado no protótipo apresenta limitações relacionadas à necessidade de filtragem, ao baixo nível de potência disponível no GPIO e à impossibilidade de alimentar diretamente um alto-falante passivo de baixa impedância. O uso do MAX98357A poderia contornar parte dessas limitações, pois o módulo já possui amplificação integrada e foi projetado especificamente para acionar alto-falantes.
+
