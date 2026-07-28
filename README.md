@@ -149,43 +149,40 @@ Algumas decisões foram adotadas para reduzir o acoplamento entre os módulos e 
 
 #### Validação funcional do sistema integrado
 
-Os testes realizados permitiram validar o fluxo integrado de captura de imagem, geração de descrição textual e reprodução da resposta em áudio. Nos modos baseados em serviços de nuvem, a XIAO ESP32-S3 Sense foi capaz de capturar imagens, enviá-las ao Gemini juntamente com o prompt correspondente ao modo selecionado e receber uma descrição da cena.
+Os testes realizados permitiram validar o fluxo completo dos modos baseados em serviços de nuvem, descrito detalhadamente na sessão 2.1. Fluxo de Processamento. Os testes também demonstraram que a alteração dos prompts e das configurações da câmera modifica o foco da resposta gerada. No modo voltado à mobilidade, as descrições priorizaram obstáculos, bloqueios de passagem e direções mais livres. No modo de análise de objetos próximos, o sistema concentrou-se na identificação do objeto principal, de textos legíveis e de sua posição no campo de visão. Já no modo de descrição geral, as respostas apresentaram uma caracterização mais ampla do ambiente e da disposição dos elementos presentes na cena.
 
-O texto retornado foi encaminhado ao Azure Speech, que gerou um arquivo WAV armazenado temporariamente no LittleFS. O arquivo foi interpretado pelo módulo de reprodução, e suas amostras PCM foram transmitidas pela saída PDM. Após a reprodução, o arquivo temporário foi removido.
+De modo geral, o sistema apresentou melhor desempenho em descrições amplas do ambiente e na identificação de elementos de maior destaque. Em contrapartida, foram observadas limitações em tarefas que exigiam percepção de detalhes menores, especialmente na leitura de textos. Em algumas situações, o conteúdo textual foi reconhecido de forma incompleta ou incorreta, sugerindo maior sensibilidade a fatores como foco, distância, iluminação, resolução da imagem e tamanho dos caracteres.
 
-Também foi verificado que a alteração dos prompts permite direcionar o conteúdo das respostas para diferentes objetivos, como identificação de riscos durante o deslocamento, análise de objetos próximos e descrição geral do ambiente.
+Além do fluxo baseado em serviços externos, o projeto previu um modo de detecção de objetos executado localmente na XIAO ESP32-S3 Sense. Para essa etapa, foi utilizado um modelo treinado e exportado pelo Edge Impulse, destinado ao reconhecimento da classe definida durante o treinamento. O funcionamento do modelo foi validado de forma independente na Arduino IDE. Entretanto, a integração desse módulo ao fluxo principal não foi concluída de maneira satisfatória. Embora o modo tenha sido incorporado ao projeto, sua operação conjunta com os demais componentes não foi estabilizada, especialmente em relação ao gerenciamento da câmera, à memória disponível e à compatibilidade com os outros módulos já presentes no sistema. Dessa forma, a inferência local permaneceu como um módulo funcional e validado separadamente, mas ainda não plenamente integrado ao protótipo final.
 
-O fluxo de processamento em nuvem foi validado de forma completa. Durante os testes, o dispositivo capturou imagens, enviou os dados ao Gemini e recebeu descrições coerentes com as cenas observadas. As descrições retornadas foram encaminhadas ao Azure Speech e convertidas em arquivos de áudio reproduzidos pelo protótipo.
+Para mais detalhes sobre o treinamento do modelo de detecção de objetos, consulte a sessão [Subprojetos e testes](desenvolvimento.md#2-subprojetos-e-testes). 
 
-A integração com o LittleFS permitiu armazenar temporariamente o arquivo WAV recebido. Após a leitura e reprodução das amostras PCM pela saída PDM, o arquivo foi removido, liberando novamente o espaço de armazenamento.
+#### Tempos de resposta, uso de memória e confiabilidade das requisições
 
-Os testes também demonstraram que os modos de descrição conseguem alterar o foco da resposta por meio das configurações de câmera e dos prompts enviados ao Gemini. Dessa forma, o sistema pode priorizar informações relacionadas à mobilidade, objetos próximos ou características gerais do ambiente.
+Para avaliar o desempenho do protótipo, foram analisadas dez execuções do fluxo integrado, sendo três no modo de mobilidade, três no modo de leitura de objetos próximos e quatro no modo de descrição geral. As medições incluíram a configuração da câmera, a captura e conversão da imagem para Base64, a requisição ao Gemini, a geração e o download do arquivo WAV pelo Azure Speech, a reprodução do áudio e o tempo total do fluxo. A tabela seguinte ilustra o fluxo total médio de cada modo: 
 
-O funcionamento do modelo foi validado de forma independente na Arduino IDE. Após ajustes na configuração da câmera e na alocação de memória, a placa conseguiu inicializar o sensor, processar as imagens e executar inferências contínuas localmente, chegando a identificar a classe treinada e retornar a respectiva caixa delimitadora. Entretanto, não foi possível concluir de maneira satisfatória a incorporação desse módulo ao fluxo completo do sistema, que também envolve captura de imagem, comunicação com serviços externos, síntese de voz e reprodução de áudio.
+| Modo | Menor tempo total | Maior tempo total | Fluxo total médio |
+|---|---:|---:|---:|
+| Modo 1 | 47,308 s | 54,368 s | 51,626 s |
+| Modo 2 | 43,968 s | 63,442 s | 55,138 s |
+| Modo 3 | 60,221 s | 78,140 s | 67,197 s |
 
-Dessa forma, a inferência local permaneceu como um módulo funcional e validado separadamente, mas ainda não totalmente integrado ao protótipo final. Esse resultado evidencia que o modelo é executável no hardware escolhido, porém também demonstra a necessidade de ajustes adicionais relacionados ao gerenciamento da câmera, ao uso de memória e à compatibilidade entre os diferentes componentes do sistema.
+Já o gráfico abaixo resume os tempos médios por etapa em cada modo: 
+<img width="2970" height="1767" alt="image" src="https://github.com/user-attachments/assets/48920356-b96d-4213-96ea-c2016708f238" />
 
-#### Desempenho e tempos de resposta
+A maior parte do tempo de resposta do protótipo está associada aos serviços externos, especialmente à síntese e ao download do áudio pelo Azure, enquanto as operações locais de configuração da câmera, captura da imagem e conversão para Base64 representam uma parcela reduzida do fluxo. 
 
-Falar sobre recursos de memória
-Para avaliar o comportamento do sistema, foram adicionadas medições de tempo às principais etapas do fluxo. Em uma execução de teste, foram obtidos os seguintes valores:
+Em relação ao uso de memória e armazenamento, a compilação do firmware indicou o uso de 64.652 bytes de RAM estática, correspondentes a 19,7% dos 327.680 bytes considerados pelo ambiente de compilação. O programa ocupou 1.314.089 bytes da partição destinada à aplicação, equivalente a 39,3% da capacidade de 3.342.336 bytes. Os tamanhos médios dos arquivos WAV retornados pela Azure Speech podem ser verificados na tabela:  
 
-| Etapa do processamento | Tempo observado |
+| Modo | WAV médio aproximado |
 |---|---:|
-| Configuração da câmera | 261 ms |
-| Captura e conversão para Base64 | 312 ms |
-| Requisição ao Gemini | 9,547 s |
-| Geração e download do áudio pelo Azure Speech | 37,892 s |
-| Reprodução do áudio | 17,372 s |
-| Fluxo completo | 65,808 s |
+| Modo 1 | 512 KB |
+| Modo 2 | 607 KB |
+| Modo 3 | 752 KB |
 
-Os valores correspondem a uma execução específica e podem variar de acordo com a qualidade da conexão, a disponibilidade dos serviços, o tamanho da imagem, a extensão do texto gerado e a duração do áudio.
+A formulação dos prompts priorizou respostas curtas e objetivas, tanto para fornecer informações mais adequadas ao contexto assistivo quanto para reduzir o tempo de síntese, o tamanho dos arquivos de áudio e a ocupação temporária da memória. Nos testes realizados, o maior arquivo WAV apresentou 847.244 bytes, correspondendo a aproximadamente 57,5% do espaço livre informado pelo LittleFS antes da solicitação. Dessa forma, o armazenamento interno mostrou-se suficiente para os arquivos gerados no protótipo, sem necessidade de cartão SD nas condições avaliadas. A opção por salvar o arquivo completo antes da reprodução também simplificou o fluxo em comparação com uma solução baseada em streaming, que exigiria gerenciamento contínuo de buffers e maior tratamento de possíveis oscilações da conexão. Após a reprodução, o arquivo temporário foi removido, liberando novamente o espaço utilizado.
 
-As medições indicam que a captura e a preparação da imagem representam uma parcela pequena do tempo total. A maior latência ocorre na síntese de voz, no download do arquivo e na reprodução do áudio.
-
-#### Confiabilidade das requisições e estabilidade do sistema
-
-#### Validação da inferência local 
+No que diz respeito a confiabilidade das requisições, nas dez execuções analisadas, todas as solicitações ao Gemini e ao Azure Speech foram concluídas, e os arquivos de áudio foram reproduzidos com sucesso. Assim, foi observada uma taxa de sucesso de 100% para o fluxo completo nas condições específicas do experimento.
 
 #### Limitações Atuais
 
