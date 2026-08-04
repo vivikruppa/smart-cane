@@ -1,8 +1,8 @@
 # Desenvolvimento do projeto
 
-## 1. Subprojetos e testes
+## Subprojetos e testes
 
-### 1.1 Implementação do algoritmo para análise e reconhecimento de objetos e ambientes 
+## 1. Implementação do algoritmo para análise e reconhecimento de objetos e ambientes 
 
 Esse subprojeto tem o objetivo de implementar um algoritmo de análise e reconhecimento de objetos e ambientes, para que este possa ser utilizado no ESP32S3, utilizando as capacidades de uma LLM atual de nivel básico para que o mesmo possa ser usado para ajudar pessoas com deficiências visuais a reconhecer lugares desconhecidos ou algum objeto em específico. 
 Devido ao fato da implementação desse subprojeto ser muito mais complexa que o subprojeto 2, ele teve uma influência maior sobre mais o rumo do Projeto como um todo em termos de software. 
@@ -22,7 +22,7 @@ sendBase64toGemini: Função que tem como entrada a foto em base64 em forma de S
 extractCleanText: Função que remove todo o barulho e Thought Signature da String Retornada por sendBase64toGemini, deixando apenas o prompt limpo para conversão TTS.
 
 
-### 1.2 Treinamento do modelo de Detecção de Objetos 
+## 2. Treinamento do modelo de Detecção de Objetos 
 
 Nesse subprojeto, relatamos o desenvolvido de um modelo de detecção de objetos executado localmente no ESP32-S3. Essa abordagem permite avaliar uma alternativa com menor dependência de conexão com a internet, menor tempo de resposta e maior preservação das imagens capturadas, já que o processamento ocorre no próprio dispositivo.
 
@@ -63,7 +63,7 @@ Além do teste de inferência realizado localmente na XIAO ESP32-S3 Sense, o mod
 
 ![Exemplo de possível falso positivo](documentaçao/falso-positivo-sensecraft.png)
 
-### 2.3 Saída PDM com um sinal simples
+## 3. Saída PDM com um sinal simples
  
 #### Justificativa para a escolha do PDM e Fluxo de Funcionamento
 
