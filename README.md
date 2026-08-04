@@ -1,7 +1,5 @@
 # Smart Cane 
-<div align="justify">
 Este projeto consiste no desenvolvimento de um <strong>dispositivo assistivo baseado na placa Seeed Studio XIAO ESP32-S3 Sense</strong>, com o objetivo de auxiliar pessoas com deficiência visual na interpretação de informações presentes no ambiente. Para isso, o sistema utiliza uma câmera para capturar imagens e processá-las de acordo com diferentes modos de funcionamento, permitindo obter descrições de objetos, textos e características do espaço ao redor.
-</div>
 
 ## 1. Resumo do Projeto
 
@@ -23,11 +21,11 @@ Para mais detalhes sobre hardware, software e fluxo de processamento do projeto,
 
 #### Resultados
 
+O seguinte vídeo ilustra o funcionamento do protótipo desenvolvido: https://youtu.be/WbRIX9ETWZI 
+
 Como resultado, foi obtido um protótipo funcional capaz de capturar imagens, produzir descrições textuais e convertê-las em áudio. O projeto também permitiu avaliar limitações relacionadas ao tempo de resposta, à conectividade, aos recursos de memória e à integração entre diferentes módulos de software.
 
-Inicialmente, o projeto previa a utilização de um modelo de detecção de objetos executado localmente na XIAO ESP32-S3 Sense, com o objetivo de reconhecer obstáculos ou sinalizações relevantes sem depender exclusivamente de serviços externos. Para essa etapa, foi utilizada uma biblioteca gerada pelo Edge Impulse, contendo o modelo treinado e o código necessário para realizar a captura das imagens e a inferência diretamente na placa.
-
-O funcionamento do modelo foi validado de forma independente na Arduino IDE. Entretanto, não foi possível concluir de maneira satisfatória a incorporação desse módulo ao fluxo completo do sistema, que também envolve captura de imagem, comunicação com serviços externos, síntese de voz e reprodução de áudio.
+Inicialmente, o projeto previa a utilização de um modelo de detecção de objetos executado localmente na XIAO ESP32-S3 Sense, com o objetivo de reconhecer obstáculos ou sinalizações relevantes sem depender exclusivamente de serviços externos. Para essa etapa, foi utilizada uma biblioteca gerada pelo Edge Impulse, contendo o modelo treinado e o código necessário para realizar a captura das imagens e a inferência diretamente na placa. O funcionamento do modelo foi validado de forma independente na Arduino IDE. Entretanto, não foi possível concluir de maneira satisfatória a incorporação desse módulo ao fluxo completo do sistema, que também envolve captura de imagem, comunicação com serviços externos, síntese de voz e reprodução de áudio.
 
 Para mais detalhes, consulte a seção [Resultados](#3-resultados).
 
