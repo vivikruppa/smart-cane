@@ -37,25 +37,21 @@ O sistema oferece diferentes modos de captura e análise de imagem que utilizam 
 
 1. **Apoio à mobilidade e identificação de riscos**
 
-   O primeiro modo é voltado ao auxílio durante o deslocamento do usuário. A imagem capturada é analisada com prioridade para obstáculos, degraus, buracos, portas, passagens e outros elementos que possam representar risco imediato.
+   O primeiro modo é voltado ao auxílio durante o deslocamento do usuário. A imagem capturada é analisada com prioridade para obstáculos, degraus, buracos, portas, passagens e outros elementos que possam representar risco imediato. O sistema também busca indicar a direção mais livre para seguir, produzindo uma resposta curta e objetiva para facilitar a compreensão por áudio.
 
-   O sistema também busca indicar a direção mais livre para seguir, produzindo uma resposta curta e objetiva para facilitar a compreensão por áudio.
+   O prompt utilizado é definido por: "Analise a imagem para auxiliar a mobilidade de uma pessoa com deficiência visual. Informe apenas obstáculos e suas distâncias aproximadas, riscos, degraus, buracos, portas, passagens e a direção mais livre para seguir. Priorize o que estiver próximo e puder causar risco imediato. Responda em no máximo duas frases curtas, sem títulos, listas, markdown ou explicações adicionais."
 
-2. **Leitura e análise de objetos próximos**
+3. **Leitura e análise de objetos próximos**
 
-   O segundo modo é destinado à análise de objetos posicionados próximos à câmera. Sua configuração procura favorecer a captura de detalhes e textos presentes em embalagens, placas, documentos ou outros objetos.
+   O segundo modo é destinado à análise de objetos posicionados próximos à câmera. Sua configuração procura favorecer a captura de detalhes e textos presentes em embalagens, placas, documentos ou outros objetos. O Gemini recebe uma solicitação para identificar o objeto principal, verificar a presença de texto e descrever seu estado ou suas características mais relevantes.
 
-   O Gemini recebe uma solicitação para identificar o objeto principal, verificar a presença de texto e descrever seu estado ou suas características mais relevantes.
+    O prompt utilizado é definido por: "Identifique o principal objeto próximo da câmera. Caso exista texto legível, leia apenas as informações mais importantes. Informe também a posição aproximada do objeto. Responda em no máximo três frases curtas, sem títulos, listas, markdown ou explicações adicionais."
 
-3. **Descrição geral do ambiente**
+5. **Descrição geral do ambiente**
 
    O terceiro modo utiliza uma configuração voltada à captura de cenas mais amplas. Seu objetivo é oferecer uma descrição geral do ambiente, destacando objetos, locais, pessoas ou acontecimentos relevantes presentes na imagem.
 
-O quarto modo utiliza um fluxo diferente dos demais. Em vez de enviar a imagem para um serviço externo, o dispositivo executa localmente um modelo de visão computacional desenvolvido no Edge Impulse: 
-
-4. **Inferência local**
-
-   Nesse modo, a imagem é capturada, preparada e fornecida ao classificador embarcado, que retorna as classes detectadas, suas probabilidades e, quando aplicável, a localização dos objetos na imagem. Na versão atual, o resultado da inferência é exibido no Monitor Serial e ainda não é encaminhado ao sistema de áudio.
+   O prompt utilizado é definido por: "Descreva de forma breve o ambiente ao redor para uma pessoa com deficiência visual. Informe o tipo de ambiente, os principais objetos, pessoas e pontos de referência, indicando posições como esquerda, direita, frente ou fundo. Responda em no máximo três frases curtas, sem títulos, listas, markdown ou explicações adicionais."
    
 ### 2.1 Fluxo de processamento
 
@@ -76,18 +72,18 @@ Os componentes utilizados para a elaboração do protótipo são descritos na ta
 |---|---|
 | Seeed Studio XIAO ESP32-S3 Sense | Processamento central, conectividade Wi-Fi e controle dos periféricos |
 | Câmera do módulo Sense | Captura de imagens para processamento em nuvem e inferência local |
-| Interface de áudio PDM | Transmissão digital das amostras de áudio |
-| Fones ou caixa de som utilizada nos testes | Reprodução da resposta auditiva |
+| Fones ou caixa de som ativa | Reprodução da resposta auditiva |
 | Cabo USB | Alimentação, programação e comunicação com o Monitor Serial |
 | Jumpers e conexões | Interligação entre a placa e a saída de áudio |
+| Módulo Adaptador P2 3.5mm | Interligação com P2 do reprodutor de áudio |  
 
 As conexões executadas são ilustradas na tabela abiaxo e no diagrama: 
-| Sinal | Pino da XIAO ESP32-S3 |
-|---|---|
-| Dados PDM | GPIO 1 |
-| Clock PDM | GPIO 2 |
-| Terra | GND |
+| Sinal | Pino da XIAO ESP32-S3 | Módulo Adaptador P2 |
+|---|---|---|
+| Dados PDM | GPIO 1 | TIP |
+| Terra | GND | RING 2 |
 
+A imagem abaixo ilustra o circuito: 
 #### Placa principal e Sistema de captura de imagem
 A unidade central do protótipo é a 
 [Seeed Studio XIAO ESP32-S3 Sense](https://wiki.seeedstudio.com/xiao_esp32s3_getting_started/#xiao-esp32-s3-sense-front). Sua escolha esteve relacionada principalmente à integração entre o microcontrolador ESP32-S3 e o módulo de câmera, às dimensões compactas e à disponibilidade de conectividade Wi-Fi. 
