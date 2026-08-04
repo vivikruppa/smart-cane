@@ -1,5 +1,7 @@
 # Desenvolvimento do projeto
 
+Todas as referências utilizadas para o desenvolvimento do projeto são mencionadas durante a descrição da elaboração dos subprojetos. 
+
 ## Subprojetos e testes
 
 ## 1. Implementação do algoritmo para análise e reconhecimento de objetos e ambientes 
