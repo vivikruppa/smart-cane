@@ -98,7 +98,7 @@ A saída auditiva do protótipo é realizada por meio de uma interface PDM contr
 
 A escolha dessa abordagem permitiu desenvolver a reprodução de áudio diretamente a partir dos recursos disponíveis no microcontrolador, sem a adoção do módulo amplificador com DAC inicialmente considerado. O áudio recebido do serviço de síntese de voz é convertido pelo software em amostras PCM, que são transmitidas pelo periférico configurado para a saída PDM.
 
-Para mais detalhes sobre a técnica PDM e referências utilizadas, consulte a sessão [Saída PDM com um sinal simples](documentaçao/Desenvolvimento.md#3-Saída-PDM-com-um-sinal-simples) 
+Para mais detalhes sobre a técnica PDM e referências utilizadas, consulte a seção [Saída PDM com um sinal simples](documentaçao/Desenvolvimento.md#3-Saída-PDM-com-um-sinal-simples) 
 
 ### 2.3 Arquitetura de Software
 
@@ -131,7 +131,7 @@ Algumas decisões foram adotadas para reduzir o acoplamento entre os módulos e 
 
 - **Separação entre `WavPlayer` e `PdmOutput`:** o `WavPlayer` é responsável pela interpretação do formato WAV e pela obtenção das amostras PCM, enquanto o `PdmOutput` cuida apenas da configuração do periférico e da transmissão dessas amostras. Essa separação evita misturar o tratamento do arquivo com o controle da saída física de áudio.
 
-Para mais detalhes sobre o desenvolvimento do código, consulte a sessão [Implementação do algoritmo para análise e reconhecimento de objetos e ambientes](documentaçao/Desenvolvimento.md#1-Implementação-do-algoritmo-para-análise-e-reconhecimento-de-objetos-e-ambientes) 
+Para mais detalhes sobre o desenvolvimento do código, consulte a seção [Implementação do algoritmo para análise e reconhecimento de objetos e ambientes](documentaçao/Desenvolvimento.md#1-Implementação-do-algoritmo-para-análise-e-reconhecimento-de-objetos-e-ambientes) 
 
 ## 3. Resultados
 
@@ -145,7 +145,7 @@ Observa-se um espelhamento na descrição das características da imagem, que po
 
 Além do fluxo baseado em serviços externos, o projeto previu um modo de detecção de objetos executado localmente na XIAO ESP32-S3 Sense. Para essa etapa, foi utilizado um modelo treinado e exportado pelo Edge Impulse, destinado ao reconhecimento da classe definida durante o treinamento. O funcionamento do modelo foi validado de forma independente na Arduino IDE. Entretanto, a integração desse módulo ao fluxo principal não foi concluída de maneira satisfatória. Embora o modo tenha sido incorporado ao projeto, sua operação conjunta com os demais componentes não foi estabilizada, especialmente em relação ao gerenciamento da câmera, à memória disponível e à compatibilidade com os outros módulos já presentes no sistema. Dessa forma, a inferência local permaneceu como um módulo funcional e validado separadamente, mas ainda não plenamente integrado ao protótipo final.
 
-Para mais detalhes sobre o treinamento do modelo de detecção de objetos, consulte a sessão [Treinamento do modelo de Detecção de Objetos](documentaçao/Desenvolvimento.md#2-Treinamento-do-modelo-de-Detecção-de-Objetos). 
+Para mais detalhes sobre o treinamento do modelo de detecção de objetos, consulte a seção [Treinamento do modelo de Detecção de Objetos](documentaçao/Desenvolvimento.md#2-Treinamento-do-modelo-de-Detecção-de-Objetos). 
 
 #### Tempos de resposta, uso de memória e confiabilidade das requisições
 
