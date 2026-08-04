@@ -61,9 +61,8 @@ O modelo escolhido para ser implementado no projeto final foi o Modelo Only Sign
 
 Além do teste de inferência realizado localmente na XIAO ESP32-S3 Sense, o modelo também foi avaliado por meio da plataforma [SenseCraft-Web-Toolkit](https://seeed-studio.github.io/SenseCraft-Web-Toolkit/#/setup/process). Nesse ambiente, foram comparadas imagens contendo o objeto de interesse e imagens que não deveriam gerar detecção. Em uma das situações, o modelo identificou corretamente uma placa de aviso de piso molhado, indicando que conseguiu reconhecer características presentes nas imagens de treinamento. Entretanto, também foram observadas detecções em imagens sem a presença desse objeto, sugerindo a ocorrência de falsos positivos. Esse comportamento indica que o modelo ainda apresenta limitações de generalização e pode estar associando elementos visuais semelhantes, como cores, formatos ou padrões de fundo, à classe treinada.
 
-![Exemplo de Detecção Correta](documentaçao/deteccao_correta_sensecraft.png)
-
-![Exemplo de possível falso positivo](documentaçao/falso_positivo_sensecraft.png)
+<img width="817" height="645" alt="deteccao_correta_sensecraft" src="https://github.com/user-attachments/assets/7cc5af78-e78d-4174-ac0e-2865c56f6228" />
+<img width="675" height="652" alt="falso_positivo_sensecraft" src="https://github.com/user-attachments/assets/7a9f5dac-b4f1-40a3-8da8-2ea1cc5bc56c" />
 
 ## 3. Saída PDM com um sinal simples
  
