@@ -1,5 +1,5 @@
 # Smart Cane 
-Este projeto consiste no desenvolvimento de um <strong>dispositivo assistivo baseado na placa Seeed Studio XIAO ESP32-S3 Sense</strong>, com o objetivo de auxiliar pessoas com deficiência visual na interpretação de informações presentes no ambiente. Para isso, o sistema utiliza uma câmera para capturar imagens e processá-las de acordo com diferentes modos de funcionamento, permitindo obter descrições de objetos, textos e características do espaço ao redor.
+Este projeto desenvolvido em conjunto com [wenoyst](https://github.com/wenoyst) consiste no desenvolvimento de um <strong>dispositivo assistivo baseado na placa Seeed Studio XIAO ESP32-S3 Sense</strong>, com o objetivo de auxiliar pessoas com deficiência visual na interpretação de informações presentes no ambiente. Para isso, o sistema utiliza uma câmera para capturar imagens e processá-las de acordo com diferentes modos de funcionamento, permitindo obter descrições de objetos, textos e características do espaço ao redor.
 
 ## 1. Resumo do Projeto
 
